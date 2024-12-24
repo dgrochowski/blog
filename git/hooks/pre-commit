@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Be sure that docker is working
+make start
+
+# Run make check before commit
+make check
+
+# Capture the exit status of make check
+RESULT=$?
+
+# If make check fails (exit code is non-zero), abort the commit
+if [ $RESULT -ne 0 ]; then
+  echo "make check failed. Commit aborted."
+  exit 1
+fi
+
+# If make check passes, proceed with the commit
+exit 0
