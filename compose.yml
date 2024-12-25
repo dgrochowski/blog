@@ -18,7 +18,7 @@ services:
         # comment the following line in production, it allows to have nice human-readable logs in dev
         tty: ${TTY:-true}
         environment:
-            - DATABASE_URL=pgsql://postgres:postgres@postgres:5432/app_database
+            - PHP_CS_FIXER_IGNORE_ENV=true # remove after php-cs-fixer update
 
     postgres:
         image: postgres:16-alpine

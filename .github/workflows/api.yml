@@ -1,0 +1,43 @@
+name: API
+env:
+    PHP_CS_FIXER_IGNORE_ENV: true # remove after php-cs-fixer update
+    PHP_VER: '8.4'
+    EXTENSIONS: composer, symfony
+on:
+    pull_request:
+        paths:
+            - 'app/config/*.php'
+            - 'app/src/*.php'
+            - 'app/tests/*.php'
+jobs:
+    php-checks:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ env.PHP_VER }}
+                  tools: ${{ env.EXTENSIONS }}
+
+            - name: Install dependencies
+              run: composer install --no-scripts --prefer-dist --no-interaction
+              working-directory: ./app
+
+            - name: Run PHP-cs-fixer
+              run: vendor/bin/php-cs-fixer fix --dry-run --diff
+              working-directory: ./app
+
+            - name: Security check
+              run: symfony check:security
+              working-directory: ./app
+
+            - name: Run PHPStan
+              run: vendor/bin/phpstan --no-interaction
+              working-directory: ./app
+
+            - name: Run PHPUnit
+              run: bin/phpunit
+              working-directory: ./app
