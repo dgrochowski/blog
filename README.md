@@ -24,7 +24,7 @@ Then run:
 ```bash
 docker compose up --build -d
 ```
-...and visit: https://localhost/
+...and visit: https://localhost/api/doc
 
 Before commit:
 ```bash

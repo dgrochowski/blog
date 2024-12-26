@@ -40,7 +40,7 @@ final class CreateCategoryCommandTest extends TestCase
     {
         $command = new CreateCategoryCommand($name, $slug);
 
-        $this->assertEquals($name, $command->getName());
-        $this->assertEquals($slug, $command->getSlug());
+        $this->assertEquals($name, $command->name);
+        $this->assertEquals($slug, $command->slug);
     }
 }
