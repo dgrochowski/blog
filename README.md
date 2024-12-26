@@ -4,8 +4,8 @@ Blog api + admin panel based on PHP (Symfony framework)
 ### Techstack
 
 - PHP 8.4
-- Symfony Framework
-- Twig
+- Symfony Framework 7.2
+- Twig, Serializer, Swagger (NelmioApiDocBundle)
 - for local development: docker + docker compose
 
 ### Local development
@@ -22,7 +22,7 @@ cp git/hooks/pre-commit .git/hooks/pre-commit
 
 Then run:
 ```bash
-docker compose up --build -d
+make start
 ```
 ...and visit: https://localhost/api/doc
 
