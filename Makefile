@@ -6,6 +6,9 @@ build:
 start:
 	docker compose up -d
 
+migrate:
+	docker compose exec -T php sh -c 'XDEBUG_MODE=off bin/console doctrine:migration:migrate -n'
+
 check: start
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off vendor/bin/php-cs-fixer fix --diff'
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off symfony check:security'

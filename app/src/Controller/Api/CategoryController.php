@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Query\GetCategoriesQuery;
-use App\Query\GetCategoryQuery;
+use App\Bus\Query\GetCategoriesQuery;
+use App\Bus\Query\GetCategoryQuery;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 

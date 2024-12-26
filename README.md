@@ -6,6 +6,8 @@ Blog api + admin panel based on PHP (Symfony framework)
 - PHP 8.4
 - Symfony Framework 7.2
 - Twig, Serializer, Swagger (NelmioApiDocBundle)
+- EasyAdmin (admin panel)
+- CQRS
 - for local development: docker + docker compose
 
 ### Local development
@@ -23,6 +25,7 @@ cp git/hooks/pre-commit .git/hooks/pre-commit
 Then run:
 ```bash
 make start
+make migrate
 ```
 ...and visit: https://localhost/api/doc
 
