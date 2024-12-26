@@ -7,29 +7,23 @@ namespace App\Command;
 use App\Entity\Category;
 use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
-class CreateCategoryCommandHandler
+class CreateCategoryCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private SlugService $slugService,
         private EntityManagerInterface $entityManager,
-        private LoggerInterface $logger,
     ) {
     }
 
     public function __invoke(CreateCategoryCommand $command): void
     {
-        $category = new Category();
-        $category->setName($command->getName());
-        $category->setSlug($this->slugService->unique($category, $command->getSlug()));
+        $uniqueSlug = $this->slugService->unique(Category::class, $command->slug);
 
-        try {
-            $this->entityManager->persist($category);
-        } catch (\Throwable $exception) {
-            $this->logger->error('CreateCategoryCommandHandler error: '.$exception->getMessage());
-        }
+        $category = new Category();
+        $category->setName($command->name);
+        $category->setSlug($uniqueSlug);
+
+        $this->entityManager->persist($category);
     }
 }

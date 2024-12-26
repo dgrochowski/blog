@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\SlugEntity;
+use App\Exception\SlugServiceException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -34,8 +35,16 @@ class SlugService
         return $this->generateFromString($randomString);
     }
 
-    public function unique(SlugEntity $entity, ?string $value = null): string
+    public function unique(string $className, ?string $value = null): string
     {
+        if (false === class_exists($className)) {
+            throw new SlugServiceException("Class $className does not exist");
+        }
+
+        if (false === in_array(SlugEntity::class, class_implements($className))) {
+            throw new SlugServiceException("Class $className does not implement SlugEntity");
+        }
+
         if (null === $value) {
             $slug = $this->generateRandom($this->randomSlugLength);
         } else {
@@ -44,8 +53,9 @@ class SlugService
 
         $i = 1;
         $originalSlug = $slug;
+        $repository = $this->entityManager->getRepository($className);
         while (true) {
-            if (null === $this->entityManager->find($entity::class, ['slug' => $slug])) {
+            if (null === $repository->findOneBy(['slug' => $slug])) {
                 break;
             } else {
                 $slug = $originalSlug.'-'.$i;

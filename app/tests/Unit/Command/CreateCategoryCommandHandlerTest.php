@@ -11,13 +11,11 @@ use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
 final class CreateCategoryCommandHandlerTest extends TestCase
 {
     private SlugService&MockObject $slugService;
     private EntityManagerInterface&MockObject $entityManager;
-    private LoggerInterface&MockObject $logger;
 
     protected function setUp(): void
     {
@@ -25,13 +23,10 @@ final class CreateCategoryCommandHandlerTest extends TestCase
 
         $this->slugService = $this->createMock(SlugService::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
     }
 
     public function testCreateCategoryCommandHandler(): void
     {
-        $this->logger->expects(self::never())->method('error');
-
         $this->slugService->expects(self::once())
             ->method('unique')
             ->willReturn('test-category');
@@ -52,15 +47,13 @@ final class CreateCategoryCommandHandlerTest extends TestCase
         new CreateCategoryCommandHandler(
             $this->slugService,
             $this->entityManager,
-            $this->logger,
         )($command);
     }
 
     public function testCreateCategoryCommandHandlerThrowsException(): void
     {
-        $this->logger->expects(self::once())
-            ->method('error')
-            ->with('CreateCategoryCommandHandler error: unable to persist');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('unable to persist');
 
         $this->slugService->expects(self::once())
             ->method('unique')
@@ -82,7 +75,6 @@ final class CreateCategoryCommandHandlerTest extends TestCase
         new CreateCategoryCommandHandler(
             $this->slugService,
             $this->entityManager,
-            $this->logger,
         )($command);
     }
 }
