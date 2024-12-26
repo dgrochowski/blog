@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Query\GetTagQuery;
-use App\Query\GetTagsQuery;
+use App\Bus\Query\GetTagQuery;
+use App\Bus\Query\GetTagsQuery;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
