@@ -5,10 +5,7 @@ env:
     EXTENSIONS: composer, symfony
 on:
     pull_request:
-        paths:
-            - 'app/config/*.php'
-            - 'app/src/*.php'
-            - 'app/tests/*.php'
+
 jobs:
     php-checks:
         runs-on: ubuntu-latest
