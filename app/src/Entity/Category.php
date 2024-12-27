@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class Category implements SlugEntity
+class Category implements SlugEntity, ApiEntity
 {
     use SlugTrait;
 
@@ -38,5 +38,14 @@ class Category implements SlugEntity
         $this->name = $name;
 
         return $this;
+    }
+
+    public function apiFields(): array
+    {
+        return [
+            'id',
+            'name',
+            'slug',
+        ];
     }
 }
