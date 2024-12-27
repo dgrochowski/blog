@@ -1,3 +1,4 @@
+Hello %user%!: Cześć %user%!
 Admin: Admin
 Dashboard: Panel
 Blog: Blog
@@ -9,3 +10,9 @@ Categories: Kategorie
 Category: Kategoria
 Slug: Ścieżka
 New slug: Nowa ścieżka
+Slug already taken: Ścieżka jest już zajęta
+Admin with the specified e-mail address exists: Administrator z podanym adresem e-mail istnieje
+You cannot delete your account: Nie możesz usunąć swojego konta
+Added successfully: Dodano pomyślnie
+Updated successfully: Zaktualizowano pomyślnie
+Removed successfully: Usunięto pomyślnie

@@ -31,7 +31,7 @@ class ApiEntityHandler
     public function handleObject(object $value): array
     {
         $result = [];
-        if (in_array(ApiEntity::class, class_implements($value::class))) {
+        if (in_array(ApiEntity::class, class_implements($value::class), true)) {
             foreach ($value->apiFields() as $field) {
                 $getName = 'get'.ucfirst($field);
                 $result[$field] = $value->{$getName}();
