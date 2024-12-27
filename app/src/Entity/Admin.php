@@ -28,15 +28,13 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles = ['ROLE_ADMIN'];
+    private array $roles;
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
-
-    private ?string $updatePassword = null;
 
     public function getId(): ?int
     {
@@ -109,21 +107,11 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(?string $password): static
     {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getUpdatePassword(): ?string
-    {
-        return $this->updatePassword;
-    }
-
-    public function setUpdatePassword(string $updatePassword): static
-    {
-        $this->updatePassword = $updatePassword;
+        if (null !== $password) {
+            $this->password = $password;
+        }
 
         return $this;
     }

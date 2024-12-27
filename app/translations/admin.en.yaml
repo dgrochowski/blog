@@ -1,3 +1,4 @@
+Hello %user%!: Hello %user%!
 Admin: Admin
 Dashboard: Dashboard
 Blog: Blog
@@ -9,3 +10,9 @@ Categories: Categories
 Category: Category
 Slug: Slug
 New slug: New slug
+Slug already taken: Slug already taken
+Admin with the specified e-mail address exists: Admin with the specified e-mail address exists
+You cannot delete your account: You cannot delete your account
+Added successfully: Added successfully
+Updated successfully: Updated successfully
+Removed successfully: Removed successfully

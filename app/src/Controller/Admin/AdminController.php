@@ -27,7 +27,12 @@ class AdminController extends AbstractDashboardController
     #[Route('/')]
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
+        /** @var Admin|null $admin */
+        $admin = $this->security->getUser();
+
+        return $this->render('admin/dashboard.html.twig', [
+            'user' => $admin?->getName() ?? 'Admin',
+        ]);
     }
 
     public function configureDashboard(): Dashboard

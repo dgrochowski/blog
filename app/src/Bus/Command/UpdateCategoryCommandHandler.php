@@ -17,19 +17,13 @@ class UpdateCategoryCommandHandler implements CommandHandlerInterface
 
     public function __invoke(UpdateCategoryCommand $command): void
     {
-        $category = $this->categoryRepository->findOneBySlug($command->oldSlug);
+        $category = $this->categoryRepository->find($command->id);
         if (null === $category) {
             return;
         }
 
         $category->setName($command->name);
-
-        if (null !== $command->newSlug) {
-            $newSlugCategory = $this->categoryRepository->findOneBySlug($command->newSlug);
-            if (null === $newSlugCategory) {
-                $category->setSlug($command->newSlug);
-            }
-        }
+        $category->setSlug($command->slug);
 
         $this->entityManager->persist($category);
     }

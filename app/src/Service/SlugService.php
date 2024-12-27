@@ -41,7 +41,7 @@ class SlugService
             throw new SlugServiceException("Class $className does not exist");
         }
 
-        if (false === in_array(SlugEntity::class, class_implements($className))) {
+        if (false === in_array(SlugEntity::class, class_implements($className), true)) {
             throw new SlugServiceException("Class $className does not implement SlugEntity");
         }
 

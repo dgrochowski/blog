@@ -28,78 +28,17 @@ final class UpdateCategoryCommandHandlerTest extends TestCase
     public function testUpdateCategoryCommandHandlerNothigToUpdate(): void
     {
         $this->categoryRepository->expects(self::once())
-            ->method('findOneBySlug')
-            ->with('old-slug')
+            ->method('find')
+            ->with(321)
             ->willReturn(null);
 
         $this->entityManager->expects(self::never())
             ->method('persist');
 
         $command = new UpdateCategoryCommand(
+            id: 321,
             name: 'Test Category',
-            oldSlug: 'old-slug',
-            newSlug: 'new-slug',
-        );
-
-        new UpdateCategoryCommandHandler(
-            $this->categoryRepository,
-            $this->entityManager,
-        )($command);
-    }
-
-    public function testUpdateCategoryCommandHandlerNullableNewSlug(): void
-    {
-        $category = new Category();
-        $category->setName('Test Category');
-        $category->setSlug('slug');
-
-        $this->categoryRepository->expects(self::once())
-            ->method('findOneBySlug')
-            ->with('slug')
-            ->willReturn($category);
-
-        $category->setName('New Test Category');
-
-        $this->entityManager->expects(self::once())
-            ->method('persist')
-            ->with($category);
-
-        $command = new UpdateCategoryCommand(
-            name: 'New Test Category',
-            oldSlug: 'slug',
-            newSlug: null,
-        );
-
-        new UpdateCategoryCommandHandler(
-            $this->categoryRepository,
-            $this->entityManager,
-        )($command);
-    }
-
-    public function testUpdateCategoryCommandHandlerNotUpdateSlug(): void
-    {
-        $category1 = new Category();
-        $category1->setName('Test Category1');
-        $category1->setSlug('slug1');
-
-        $category2 = new Category();
-        $category2->setName('Test Category2');
-        $category2->setSlug('slug2');
-
-        $this->categoryRepository->expects(self::exactly(2))
-            ->method('findOneBySlug')
-            ->willReturnOnConsecutiveCalls($category1, $category2);
-
-        $category1->setName('New Test Category1');
-
-        $this->entityManager->expects(self::once())
-            ->method('persist')
-            ->with($category1);
-
-        $command = new UpdateCategoryCommand(
-            name: 'New Test Category1',
-            oldSlug: 'slug1',
-            newSlug: 'slug2',
+            slug: 'old-slug',
         );
 
         new UpdateCategoryCommandHandler(
@@ -114,9 +53,10 @@ final class UpdateCategoryCommandHandlerTest extends TestCase
         $category->setName('Test Category');
         $category->setSlug('old-slug');
 
-        $this->categoryRepository->expects(self::exactly(2))
-            ->method('findOneBySlug')
-            ->willReturnOnConsecutiveCalls($category, null);
+        $this->categoryRepository->expects(self::once())
+            ->method('find')
+            ->with(321)
+            ->willReturn($category);
 
         $category->setName('New Test Category');
         $category->setSlug('new-slug');
@@ -126,9 +66,9 @@ final class UpdateCategoryCommandHandlerTest extends TestCase
             ->with($category);
 
         $command = new UpdateCategoryCommand(
+            id: 321,
             name: 'New Test Category',
-            oldSlug: 'old-slug',
-            newSlug: 'new-slug',
+            slug: 'new-slug',
         );
 
         new UpdateCategoryCommandHandler(
