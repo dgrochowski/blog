@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Bus\Bus;
 use App\Entity\Admin;
 use App\Entity\Category;
+use App\Entity\Tag;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -48,7 +49,8 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
         yield MenuItem::section('Blog');
-        yield MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class);
+        yield MenuItem::linkToCrud('Categories', 'fa fa-list', Category::class);
+        yield MenuItem::linkToCrud('Tags', 'fa fa-tags', Tag::class);
 
         yield MenuItem::section('Admin');
         yield MenuItem::linkToCrud('Admin', 'fa fa-user', Admin::class);
