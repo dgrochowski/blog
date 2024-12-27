@@ -5,3 +5,7 @@ ID: ID
 Name: Name
 Email: Email
 Password: Password
+Categories: Categories
+Category: Category
+Slug: Slug
+New slug: New slug
