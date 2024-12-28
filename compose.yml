@@ -5,6 +5,7 @@ services:
             args:
                 ENABLE_OPCACHE: ${ENABLE_OPCACHE:-0}
                 SERVER_NAME: ${SERVER_NAME:-localhost}
+                TIMEZONE: ${TIMEZONE:-Europe/Warsaw}
         volumes:
             - ./app:/app
             - caddy_data:/data

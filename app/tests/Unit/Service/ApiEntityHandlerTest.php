@@ -53,11 +53,15 @@ final class ApiEntityHandlerTest extends TestCase
                 'id' => null,
                 'name' => 'string1',
                 'slug' => 'string-slug1',
+                'createdAt' => null,
+                'updatedAt' => null,
             ],
             [
                 'id' => null,
                 'name' => 'string2',
                 'slug' => 'string-slug2',
+                'createdAt' => null,
+                'updatedAt' => null,
             ],
         ];
         $result = $this->apiEntityHandler->handleArray([$tag1, $tag2]);
@@ -82,6 +86,8 @@ final class ApiEntityHandlerTest extends TestCase
             'id' => null,
             'name' => 'string',
             'slug' => 'string-slug',
+            'createdAt' => null,
+            'updatedAt' => null,
         ];
         $result = $this->apiEntityHandler->handleObject($tag);
 
