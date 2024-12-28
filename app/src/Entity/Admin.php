@@ -4,14 +4,17 @@ namespace App\Entity;
 
 use App\Repository\AdminRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class Admin implements UserInterface, PasswordAuthenticatedUserInterface
+class Admin implements UserInterface, PasswordAuthenticatedUserInterface, TimestampableEntity
 {
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

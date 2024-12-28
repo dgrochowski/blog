@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Admin;
 use App\Repository\AdminRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -89,6 +90,10 @@ class AdminCrudController extends AbstractCrudController
                 ->setRequired(false)
                 ->onlyWhenUpdating()
                 ->setFormType(PasswordType::class),
+            DateTimeField::new('createdAt')
+                ->onlyOnIndex(),
+            DateTimeField::new('updatedAt')
+                ->onlyOnIndex(),
         ];
     }
 }

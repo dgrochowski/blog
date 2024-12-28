@@ -5,7 +5,7 @@ Blog api + admin panel based on PHP (Symfony framework)
 
 - PHP 8.4
 - Symfony Framework 7.2
-- Twig, Serializer, Swagger (NelmioApiDocBundle)
+- Twig, Serializer, Swagger (NelmioApiDocBundle), stof/doctrine-extensions-bundle
 - EasyAdmin (admin panel)
 - CQRS
 - for local development: docker + docker compose

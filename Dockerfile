@@ -47,7 +47,8 @@ RUN composer global require statamic/cli
 RUN curl -sS https://get.symfony.com/cli/installer | bash && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
 # Set recommended PHP.ini settings for Symfony
-RUN echo "date.timezone = UTC" >> /usr/local/etc/php/php.ini \
+ARG TIMEZONE=UTC
+RUN echo "date.timezone = $TIMEZONE" >> /usr/local/etc/php/php.ini \
     && echo "memory_limit = 512M" >> /usr/local/etc/php/php.ini \
     && echo "short_open_tag = Off" >> /usr/local/etc/php/php.ini
 

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -34,6 +35,10 @@ class CategoryCrudController extends AbstractCrudController
             TextField::new('slug')
                 ->onlyWhenUpdating()
                 ->setRequired(true),
+            DateTimeField::new('createdAt')
+                ->onlyOnIndex(),
+            DateTimeField::new('updatedAt')
+                ->onlyOnIndex(),
         ];
     }
 }

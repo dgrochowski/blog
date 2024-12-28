@@ -6,13 +6,17 @@ namespace App\Entity;
 
 use App\Entity\Traits\SlugTrait;
 use App\Repository\TagRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
-class Tag implements SlugEntity, ApiEntity
+class Tag implements SlugEntity, ApiEntity, TimestampableEntity
 {
     use SlugTrait;
+    use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,6 +26,14 @@ class Tag implements SlugEntity, ApiEntity
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'tags')]
+    private Collection $posts;
+
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -40,12 +52,24 @@ class Tag implements SlugEntity, ApiEntity
         return $this;
     }
 
+    public function addPost(Post $post): void
+    {
+        $this->posts[] = $post;
+    }
+
+    public function removePost(Post $post): void
+    {
+        $this->posts->removeElement($post);
+    }
+
     public function apiFields(): array
     {
         return [
             'id',
             'name',
             'slug',
+            'createdAt',
+            'updatedAt',
         ];
     }
 }
