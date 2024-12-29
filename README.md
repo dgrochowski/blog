@@ -16,20 +16,16 @@ Blog api + admin panel based on PHP (Symfony framework)
 - your favourite IDE (PHPStorm/VSCode/Any other...)
 - [Docker](https://docs.docker.com/get-started/get-docker/)
 
-**Good to have:**
-- prepared git `pre-commit` hook
+### How to run
+
+Run once:
 ```bash
-cp git/hooks/pre-commit .git/hooks/pre-commit
+make setup
 ```
 
-Then run:
+...then:
 ```bash
 make start
 make migrate
 ```
-...and visit: https://localhost/api/doc
-
-Before commit:
-```bash
-make check
-```
+visit: https://localhost/api/doc
