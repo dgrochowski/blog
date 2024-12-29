@@ -56,7 +56,7 @@ final class ControllerUtilsTest extends TestCase
      *     class: string,
      * }>
      */
-    public function sluggableData(): iterable
+    public static function sluggableData(): iterable
     {
         yield 'sluggable data' => [
             'fields' => ['id', 'name', 'slug'],

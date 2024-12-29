@@ -23,6 +23,7 @@
         "symfony/form": "7.2.*",
         "symfony/framework-bundle": "7.2.*",
         "symfony/messenger": "7.2.*",
+        "symfony/mime": "7.2.*",
         "symfony/password-hasher": "7.2.*",
         "symfony/property-access": "7.2.*",
         "symfony/property-info": "7.2.*",
@@ -37,6 +38,7 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "ext-gd": "*",
         "friendsofphp/php-cs-fixer": "^3.65",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^9.5",

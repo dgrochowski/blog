@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Bus\Command;
 use App\Bus\Command\CreatePostCommand;
 use App\Bus\Command\CreatePostCommandHandler;
 use App\Entity\Category;
+use App\Entity\File;
 use App\Entity\Post;
 use App\Entity\Tag;
 use App\Service\SlugService;
@@ -44,11 +45,18 @@ final class CreatePostCommandHandlerTest extends TestCase
         $category->setName('Category');
         $category->setSlug('category');
 
+        $file = new File();
+        $file->setIsImage(true);
+        $file->setFileName('file.jpg');
+        $file->setOriginalName('originalName.jpg');
+        $file->setMimeType('image/jpg');
+        $file->setSize(1000);
+
         $post = new Post();
         $post->setName('Test Post');
         $post->setSlug('test-post');
         $post->setDescription('Test description');
-        $post->setImageFilename('some-image-filename.jpg');
+        $post->setFile($file);
         $post->addTag($tag1);
         $post->addTag($tag2);
         $post->setCategory($category);
@@ -60,7 +68,7 @@ final class CreatePostCommandHandlerTest extends TestCase
         $command = new CreatePostCommand(
             name: 'Test Post',
             description: 'Test description',
-            imageFilename: 'some-image-filename.jpg',
+            file: $file,
             tags: [$tag1, $tag2],
             category: $category,
             slug: 'test-post',
@@ -72,7 +80,7 @@ final class CreatePostCommandHandlerTest extends TestCase
         )($command);
     }
 
-    public function testCreateTagCommandHandlerThrowsException(): void
+    public function testCreatePostCommandHandlerThrowsException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('unable to persist');
@@ -92,11 +100,18 @@ final class CreatePostCommandHandlerTest extends TestCase
         $category->setName('Category');
         $category->setSlug('category');
 
+        $file = new File();
+        $file->setIsImage(true);
+        $file->setFileName('file.jpg');
+        $file->setOriginalName('originalName.jpg');
+        $file->setMimeType('image/jpg');
+        $file->setSize(1000);
+
         $post = new Post();
         $post->setName('Test Post');
         $post->setSlug('test-post');
         $post->setDescription('Test description');
-        $post->setImageFilename('some-image-filename.jpg');
+        $post->setFile($file);
         $post->addTag($tag1);
         $post->addTag($tag2);
         $post->setCategory($category);
@@ -108,7 +123,7 @@ final class CreatePostCommandHandlerTest extends TestCase
         $command = new CreatePostCommand(
             name: 'Test Post',
             description: 'Test description',
-            imageFilename: 'some-image-filename.jpg',
+            file: $file,
             tags: [$tag1, $tag2],
             category: $category,
             slug: 'test-post',

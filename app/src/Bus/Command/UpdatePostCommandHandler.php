@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace App\Bus\Command;
 
-use App\Entity\Post;
-use App\Service\SlugService;
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class CreatePostCommandHandler implements CommandHandlerInterface
+class UpdatePostCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private SlugService $slugService,
+        private PostRepository $postRepository,
         private EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function __invoke(CreatePostCommand $command): void
+    public function __invoke(UpdatePostCommand $command): void
     {
-        $uniqueSlug = $this->slugService->unique(Post::class, $command->slug);
+        $post = $this->postRepository->find($command->id);
+        if (null === $post) {
+            return;
+        }
 
-        $post = new Post();
         $post->setName($command->name);
         $post->setDescription($command->description);
         $post->setFile($command->file);
@@ -28,7 +29,7 @@ class CreatePostCommandHandler implements CommandHandlerInterface
             $post->addTag($tag);
         }
         $post->setCategory($command->category);
-        $post->setSlug($uniqueSlug);
+        $post->setSlug($command->slug);
 
         $this->entityManager->persist($post);
     }
