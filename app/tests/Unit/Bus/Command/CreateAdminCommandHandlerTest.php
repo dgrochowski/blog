@@ -44,8 +44,8 @@ final class CreateAdminCommandHandlerTest extends TestCase
         $command = new CreateAdminCommand(
             name: 'Admin',
             email: 'admin@example.com',
-            roles: ['ROLE_ADMIN'],
             password: 'plain-password',
+            roles: ['ROLE_ADMIN'],
         );
 
         new CreateAdminCommandHandler(
@@ -54,7 +54,7 @@ final class CreateAdminCommandHandlerTest extends TestCase
         )($command);
     }
 
-    public function testCreateTagCommandHandlerThrowsException(): void
+    public function testCreateAdminCommandHandlerThrowsException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('unable to persist');
@@ -77,8 +77,8 @@ final class CreateAdminCommandHandlerTest extends TestCase
         $command = new CreateAdminCommand(
             name: 'Admin',
             email: 'admin@example.com',
-            roles: ['ROLE_ADMIN'],
             password: 'plain-password',
+            roles: ['ROLE_ADMIN'],
         );
 
         new CreateAdminCommandHandler(

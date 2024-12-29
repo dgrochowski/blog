@@ -40,7 +40,7 @@ final class SlugServiceTest extends TestCase
      *     expected: string,
      * }>
      */
-    public function stringValueData(): iterable
+    public static function stringValueData(): iterable
     {
         yield [
             'value' => 'Test',

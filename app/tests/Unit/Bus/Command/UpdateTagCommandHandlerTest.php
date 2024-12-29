@@ -25,7 +25,7 @@ final class UpdateTagCommandHandlerTest extends TestCase
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
     }
 
-    public function testUpdateTagCommandHandlerNothigToUpdate(): void
+    public function testUpdateTagCommandHandlerNothingToUpdate(): void
     {
         $this->tagRepository->expects(self::once())
             ->method('find')

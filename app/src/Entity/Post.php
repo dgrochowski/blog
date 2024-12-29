@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\Traits\SlugTrait;
-use App\Repository\CategoryRepository;
+use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post implements SlugEntity, ApiEntity, TimestampableEntity
 {
     use SlugTrait;
@@ -30,8 +30,9 @@ class Post implements SlugEntity, ApiEntity, TimestampableEntity
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: 'string')]
-    private ?string $imageFilename = null;
+    #[ORM\OneToOne(targetEntity: File::class, cascade: ['remove'], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: 'file_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?File $file = null;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'posts')]
     #[ORM\JoinTable(name: 'posts_tags')]
@@ -75,21 +76,16 @@ class Post implements SlugEntity, ApiEntity, TimestampableEntity
         return $this;
     }
 
-    public function getImageFilename(): ?string
+    public function getFile(): ?File
     {
-        return $this->imageFilename;
+        return $this->file;
     }
 
-    public function setImageFilename(?string $imageFilename): self
+    public function setFile(?File $file): self
     {
-        $this->imageFilename = $imageFilename;
+        $this->file = $file;
 
         return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->imageFilename;
     }
 
     public function getTags(): Collection
@@ -140,7 +136,6 @@ class Post implements SlugEntity, ApiEntity, TimestampableEntity
             'id',
             'name',
             'description',
-            'image',
             'tags',
             'category',
             'slug',

@@ -20,7 +20,11 @@ RUN apk add --no-cache --update \
     bash \
     openssl-dev \
     postgresql-dev \
-    linux-headers
+    linux-headers \
+    libpng-dev \
+    libjpeg-turbo-dev
+
+RUN docker-php-ext-configure gd --with-jpeg
 
 # Install PHP extensions
 RUN docker-php-ext-install -j$(nproc) \
@@ -28,7 +32,8 @@ RUN docker-php-ext-install -j$(nproc) \
     mbstring \
     pdo \
     intl \
-    pdo_pgsql
+    pdo_pgsql \
+    gd
 
 # Install PHP extension OPcache (PHP accelerator)
 RUN docker-php-ext-install opcache

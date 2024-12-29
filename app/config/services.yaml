@@ -4,7 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    uploads_directory: '%kernel.project_dir%/public/uploads'
+    images_directory: '%kernel.project_dir%/public/uploads/images'
+    files_directory: '%kernel.project_dir%/public/uploads/images'
 
 services:
     # default configuration for services in *this* file
@@ -29,3 +30,8 @@ services:
             tags: [{ name: messenger.message_handler, bus: command.bus }]
         App\Bus\Query\QueryHandlerInterface:
             tags: [{ name: messenger.message_handler, bus: query.bus }]
+
+    App\Service\FileService:
+        arguments:
+            $imagesDirectory: '%images_directory%'
+            $filesDirectory: '%files_directory%'

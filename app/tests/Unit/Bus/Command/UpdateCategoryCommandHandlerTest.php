@@ -25,7 +25,7 @@ final class UpdateCategoryCommandHandlerTest extends TestCase
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
     }
 
-    public function testUpdateCategoryCommandHandlerNothigToUpdate(): void
+    public function testUpdateCategoryCommandHandlerNothingToUpdate(): void
     {
         $this->categoryRepository->expects(self::once())
             ->method('find')
