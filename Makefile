@@ -16,16 +16,16 @@ setup: check-tools
 	docker compose pull
 	docker compose build
 
-build:
+build: check-tools
 	docker compose up --build -d
 
-start:
+start: check-tools
 	docker compose up -d
 
-migrate:
+migrate: check-tools
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off bin/console doctrine:migration:migrate -n'
 
-check: start
+check: check-tools start
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off vendor/bin/php-cs-fixer fix --diff'
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off symfony check:security'
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off vendor/bin/phpstan --no-interaction'
@@ -39,5 +39,5 @@ check: start
 	@echo "╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝ "
 	@echo
 
-stop:
+stop: check-tools
 	docker compose down
