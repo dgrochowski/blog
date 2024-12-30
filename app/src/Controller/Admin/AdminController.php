@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Bus\Bus;
 use App\Entity\Category;
+use App\Entity\File;
 use App\Entity\Post;
 use App\Entity\Tag;
 use App\Entity\User;
@@ -56,6 +57,8 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Categories', 'fa fa-list', Category::class)
             ->setPermission('ROLE_EDITOR');
         yield MenuItem::linkToCrud('Tags', 'fa fa-tags', Tag::class)
+            ->setPermission('ROLE_EDITOR');
+        yield MenuItem::linkToCrud('Files', 'fa fa-image', File::class)
             ->setPermission('ROLE_EDITOR');
 
         yield MenuItem::section('Admin')

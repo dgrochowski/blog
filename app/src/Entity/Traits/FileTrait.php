@@ -9,9 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait FileTrait
 {
-    private const PUBLIC_IMAGES_PATH = '/uploads/images';
-    private const PUBLIC_FILES_PATH = '/uploads/files';
-
     #[ORM\OneToOne(targetEntity: File::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\JoinColumn(name: 'file_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?File $file = null;
@@ -36,13 +33,7 @@ trait FileTrait
             return null;
         }
 
-        $publicPath = $this->file->getIsImage() ? self::PUBLIC_IMAGES_PATH : self::PUBLIC_FILES_PATH;
-
-        return $publicPath
-            .DIRECTORY_SEPARATOR
-            .$this->file->getDirectory()
-            .DIRECTORY_SEPARATOR
-            .$this->file->getFilename();
+        return $this->file->getFilePath();
     }
 
     public function getUploadImageName(): ?string
