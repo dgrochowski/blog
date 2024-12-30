@@ -37,7 +37,7 @@ class Post implements Entity, SlugEntity, ApiEntity, TimestampableEntity
     private Collection $tags;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts')]
-    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
     private ?Category $category = null;
 
     public function __construct()

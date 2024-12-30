@@ -2,16 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\AdminRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: AdminRepository::class)]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class Admin implements Entity, UserInterface, PasswordAuthenticatedUserInterface, TimestampableEntity
+#[ORM\Table(name: '`user`')]
+class User implements Entity, UserInterface, PasswordAuthenticatedUserInterface, TimestampableEntity
 {
     use TimestampableTrait;
 
@@ -37,7 +38,9 @@ class Admin implements Entity, UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    private ?string $password = null;
+    private string $password;
+
+    private ?string $updatedPassword = null;
 
     public function getId(): ?int
     {
@@ -86,8 +89,10 @@ class Admin implements Entity, UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
 
         return array_unique($roles);
     }
@@ -105,18 +110,33 @@ class Admin implements Entity, UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function setPassword(?string $password): static
+    public function setPassword(string $password): static
     {
-        if (null !== $password) {
-            $this->password = $password;
-        }
+        $this->password = $password;
 
         return $this;
+    }
+
+    public function getUpdatedPassword(): ?string
+    {
+        return $this->updatedPassword;
+    }
+
+    public function setUpdatedPassword(?string $updatedPassword): static
+    {
+        $this->updatedPassword = $updatedPassword;
+
+        return $this;
+    }
+
+    public function getIsAdmin(): bool
+    {
+        return in_array('ROLE_ADMIN', $this->roles);
     }
 
     /**

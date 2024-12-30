@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Service;
 
 use App\Bus\Command\CreateTagCommand;
-use App\Entity\Admin;
 use App\Entity\Tag;
+use App\Entity\User;
 use App\Exception\ControllerUtilsException;
 use App\Exception\SlugServiceException;
 use App\Repository\TagRepository;
@@ -72,13 +72,13 @@ final class ControllerUtilsTest extends TestCase
 
         yield 'not sluggable class with slug field' => [
             'fields' => ['slug'],
-            'class' => Admin::class,
+            'class' => User::class,
             'expected' => false,
         ];
 
         yield 'not sluggable class without slug field' => [
             'fields' => [],
-            'class' => Admin::class,
+            'class' => User::class,
             'expected' => false,
         ];
     }

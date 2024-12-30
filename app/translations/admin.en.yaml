@@ -1,5 +1,10 @@
 Hello %user%!: Hello %user%!
+User: User
+Users: Users
 Admin: Admin
+Editor: Editor
+Roles: Roles
+Is Admin: Is Admin
 Dashboard: Dashboard
 Blog: Blog
 ID: ID
@@ -18,7 +23,7 @@ Slug already taken: Slug already taken
 Image: Image
 Update image: Update image
 Content: Content
-Admin with the specified e-mail address exists: Admin with the specified e-mail address exists
+User with the specified e-mail address exists: User with the specified e-mail address exists
 You cannot delete your account: You cannot delete your account
 Added successfully: Added successfully
 Updated successfully: Updated successfully
