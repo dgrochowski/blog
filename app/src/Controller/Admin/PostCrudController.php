@@ -28,32 +28,41 @@ class PostCrudController extends AbstractCrudController
 
     public function getEntityFields(): array
     {
-        return ['name', 'description', 'uploadImageName', 'tags', 'category', 'slug'];
+        return [
+            'name',
+            'publishedAt',
+            'description',
+            'uploadImageName',
+            'tags',
+            'category',
+            'slug',
+        ];
     }
 
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
         yield ImageField::new('filePath')
-                ->setLabel('Image')
-                ->onlyOnIndex();
+            ->setLabel('Image')
+            ->onlyOnIndex();
         yield TextField::new('filePath', 'Image')
-                ->hideOnForm()
-                ->onlyWhenUpdating()
-                ->setDisabled();
+            ->hideOnForm()
+            ->onlyWhenUpdating()
+            ->setDisabled();
         yield ImageField::new('uploadImageName')
-                ->setLabel('Update image')
-                ->hideOnIndex()
-                ->setRequired(false)
-                ->setUploadDir(self::UPLOADS_PATH)
-                ->setHelp('Allowed file types: jpg, png, etc.');
+            ->setLabel('Update image')
+            ->hideOnIndex()
+            ->setRequired(false)
+            ->setUploadDir(self::UPLOADS_PATH)
+            ->setHelp('Allowed file types: jpg, png, etc.');
         yield TextField::new('name');
+        yield DateTimeField::new('publishedAt');
         yield TextField::new('slug')
-                ->hideWhenUpdating()
-                ->setRequired(false);
+            ->hideWhenUpdating()
+            ->setRequired(false);
         yield TextField::new('slug')
-                ->onlyWhenUpdating()
-                ->setRequired(true);
+            ->onlyWhenUpdating()
+            ->setRequired(true);
         yield AssociationField::new('category');
         yield TextEditorField::new('description')
             ->setLabel('Content')
@@ -71,9 +80,13 @@ class PostCrudController extends AbstractCrudController
                     'by_reference' => false, // Helps with ManyToMany relationships
                 ])
                 ->setSortable(true);
+        yield TextField::new('author')
+            ->setDisabled()
+            ->hideOnForm()
+            ->onlyOnIndex();
         yield DateTimeField::new('createdAt')
-                ->onlyOnIndex();
+            ->onlyOnIndex();
         yield DateTimeField::new('updatedAt')
-                ->onlyOnIndex();
+            ->onlyOnIndex();
     }
 }

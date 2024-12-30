@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\SlugTrait;
 use App\Repository\FileRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,7 +22,7 @@ class File implements Entity, SlugEntity, TimestampableEntity
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isImage;
 
     #[Assert\NotBlank]
@@ -36,7 +37,7 @@ class File implements Entity, SlugEntity, TimestampableEntity
     #[ORM\Column(length: 255)]
     private string $directory;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $size;
 
     #[ORM\Column(length: 100)]
