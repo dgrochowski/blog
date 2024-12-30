@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GetPostsQueryHandlerTest extends TestCase
 {
-    private PostRepository&MockObject $postRepository;
+    private PostRepository|MockObject $postRepository;
 
     protected function setUp(): void
     {

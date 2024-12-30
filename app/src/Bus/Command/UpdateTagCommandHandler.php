@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Bus\Command;
 
 use App\Repository\TagRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateTagCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private TagRepository $tagRepository,
-        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -24,7 +22,5 @@ class UpdateTagCommandHandler implements CommandHandlerInterface
 
         $tag->setName($command->name);
         $tag->setSlug($command->slug);
-
-        $this->entityManager->persist($tag);
     }
 }

@@ -20,7 +20,7 @@ class FileService
     ) {
     }
 
-    public function upload(UploadedFile $uploadedFile): File
+    public function upload(UploadedFile $uploadedFile, string $slug): File
     {
         $extension = $uploadedFile->guessExtension();
         $mimeType = $uploadedFile->getMimeType();
@@ -34,9 +34,11 @@ class FileService
         $file->setOriginalName($originalFilename);
         $file->setSize($uploadedFile->getSize());
         $file->setMimeType($mimeType);
+        $file->setDirectory($this->clock->now()->format('ymd'));
+        $file->setSlug($slug);
 
         try {
-            $directory = $this->directory($file);
+            $directory = $this->fullDirectory($file);
             if (!is_dir($directory)) {
                 if (!mkdir($directory, 0755, true) && !is_dir($directory)) {
                     throw new FileServiceException('Failed to create directory: '.$directory);
@@ -50,42 +52,55 @@ class FileService
         return $file;
     }
 
-    public function directory(File $file): string
-    {
-        $imageOrFileDirectory = $file->getIsImage() ? $this->imagesDirectory : $this->filesDirectory;
-        $path = rtrim($imageOrFileDirectory, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-        $createdAt = $file->getCreatedAt() ?? $this->clock->now();
-        $dir = $createdAt->format('ymd');
-
-        return $path.$dir;
-    }
-
-    public function fullPath(File $file): string
-    {
-        return rtrim($this->directory($file), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file->getFilename();
-    }
-
     public function delete(File $file): void
     {
         $filePath = $this->fullPath($file);
+        $directoryPath = dirname($filePath);
 
-        if (!file_exists($filePath)) {
+        if (false === file_exists($filePath)) {
             throw new FileServiceException('File not found: '.$filePath);
         }
 
         try {
-            if (!unlink($filePath)) {
+            if (false === unlink($filePath)) {
                 throw new FileServiceException('Failed to delete file: '.$filePath);
+            }
+            if (is_dir($directoryPath) && $this->isDirectoryEmpty($directoryPath)) {
+                if (false === rmdir($directoryPath)) {
+                    throw new FileServiceException('Failed to delete directory: '.$directoryPath);
+                }
             }
         } catch (\Throwable $e) {
             throw new FileServiceException('An error occurred while deleting the file: '.$e->getMessage());
         }
     }
 
-    public function isImage(string $mimeType): bool
+    private function isImage(string $mimeType): bool
     {
         $explodedMimeType = explode('/', $mimeType);
 
         return 'image' === $explodedMimeType[0];
+    }
+
+    private function fullPath(File $file): string
+    {
+        return rtrim($this->fullDirectory($file), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file->getFilename();
+    }
+
+    private function fullDirectory(File $file): string
+    {
+        $imageOrFileDirectory = $file->getIsImage() ? $this->imagesDirectory : $this->filesDirectory;
+        $path = rtrim($imageOrFileDirectory, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+
+        return $path.$file->getDirectory();
+    }
+
+    private function isDirectoryEmpty(string $directoryPath): bool
+    {
+        $contents = scandir($directoryPath);
+        // Remove "." and ".." from the contents
+        $contents = array_diff($contents, ['.', '..']);
+
+        return empty($contents);
     }
 }

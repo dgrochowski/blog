@@ -27,3 +27,10 @@ phpstan.neon
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+/public/uploads/files/*
+/public/uploads/images/*
+/public/uploads/temp/*
+!/public/uploads/files/.gitkeep
+!/public/uploads/images/.gitkeep
+!/public/uploads/temp/.gitkeep

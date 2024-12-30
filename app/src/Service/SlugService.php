@@ -13,9 +13,7 @@ class SlugService
 {
     public function __construct(
         private SluggerInterface $slugger,
-        private RandomStringGenerator $randomStringGenerator,
         private EntityManagerInterface $entityManager,
-        private int $randomSlugLength = 8,
     ) {
     }
 
@@ -24,18 +22,7 @@ class SlugService
         return (string) $this->slugger->slug($value)->lower();
     }
 
-    public function generateRandom(?int $length = null): string
-    {
-        if (null === $length) {
-            $length = $this->randomSlugLength;
-        }
-
-        $randomString = $this->randomStringGenerator->generate($length);
-
-        return $this->generateFromString($randomString);
-    }
-
-    public function unique(string $className, ?string $value = null): string
+    public function unique(string $className, string $value): string
     {
         if (false === class_exists($className)) {
             throw new SlugServiceException("Class $className does not exist");
@@ -45,11 +32,7 @@ class SlugService
             throw new SlugServiceException("Class $className does not implement SlugEntity");
         }
 
-        if (null === $value) {
-            $slug = $this->generateRandom($this->randomSlugLength);
-        } else {
-            $slug = $this->generateFromString($value);
-        }
+        $slug = $this->generateFromString($value);
 
         $i = 1;
         $originalSlug = $slug;

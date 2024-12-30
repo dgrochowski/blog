@@ -14,8 +14,8 @@ use PHPUnit\Framework\TestCase;
 
 final class CreateCategoryCommandHandlerTest extends TestCase
 {
-    private SlugService&MockObject $slugService;
-    private EntityManagerInterface&MockObject $entityManager;
+    private SlugService|MockObject $slugService;
+    private EntityManagerInterface|MockObject $entityManager;
 
     protected function setUp(): void
     {

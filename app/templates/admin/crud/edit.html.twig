@@ -1,0 +1,36 @@
+{% extends '@EasyAdmin/crud/edit.html.twig' %}
+
+{% block main %}
+
+    <img id="filePathPreview" src="" style="display: none; max-width: 500px;" />
+
+    {{ parent() }}
+
+    <script>
+        const editForm = document.querySelector('form[method="post"]');
+        if (editForm) {
+            const entityName = editForm.getAttribute('name');
+            if (entityName) {
+                const filePathLabel = document.querySelector('label[for="'+entityName+'_filePath"]');
+                const filePathInput = document.getElementById(entityName+'_filePath');
+                const filePathPreview = document.getElementById('filePathPreview');
+
+                // Hide the label
+                if (filePathLabel) {
+                    filePathLabel.style.display = 'none';
+                }
+
+                // Hide input
+                if (filePathInput) {
+                    filePathInput.style.display = 'none';
+
+                    // Display image
+                    if (filePathInput.value) {
+                        filePathPreview.setAttribute('src', filePathInput.value);
+                        filePathPreview.style.display = 'block';
+                    }
+                }
+            }
+        }
+    </script>
+{% endblock %}

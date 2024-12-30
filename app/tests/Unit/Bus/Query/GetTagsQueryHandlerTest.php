@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GetTagsQueryHandlerTest extends TestCase
 {
-    private TagRepository&MockObject $tagRepository;
+    private TagRepository|MockObject $tagRepository;
 
     protected function setUp(): void
     {

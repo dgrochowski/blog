@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GetCategoryQueryHandlerTest extends TestCase
 {
-    private CategoryRepository&MockObject $categoryRepository;
+    private CategoryRepository|MockObject $categoryRepository;
 
     protected function setUp(): void
     {

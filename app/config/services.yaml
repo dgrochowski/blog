@@ -5,7 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     images_directory: '%kernel.project_dir%/public/uploads/images'
-    files_directory: '%kernel.project_dir%/public/uploads/images'
+    files_directory: '%kernel.project_dir%/public/uploads/files'
+    temp_directory: '%kernel.project_dir%/public/uploads/temp'
 
 services:
     # default configuration for services in *this* file
@@ -35,3 +36,7 @@ services:
         arguments:
             $imagesDirectory: '%images_directory%'
             $filesDirectory: '%files_directory%'
+
+    App\EventListener\PostPreFlushListener:
+        arguments:
+            $tempDirectory: '%temp_directory%'

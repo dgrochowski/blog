@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Bus\Command;
 
+use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\TagRepository;
 
 class UpdatePostCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private PostRepository $postRepository,
-        private EntityManagerInterface $entityManager,
+        private CategoryRepository $categoryRepository,
+        private TagRepository $tagRepository,
     ) {
     }
 
@@ -24,13 +26,18 @@ class UpdatePostCommandHandler implements CommandHandlerInterface
 
         $post->setName($command->name);
         $post->setDescription($command->description);
-        $post->setFile($command->file);
-        foreach ($command->tags as $tag) {
+        $post->setUploadImageName($command->uploadImageName);
+        foreach ($command->tags->toArray() as $lazyTag) {
+            $tag = $this->tagRepository->find($lazyTag->getId());
             $post->addTag($tag);
         }
-        $post->setCategory($command->category);
-        $post->setSlug($command->slug);
 
-        $this->entityManager->persist($post);
+        $categoryId = $command->category?->getId();
+        if (null !== $categoryId) {
+            $category = $this->categoryRepository->find($categoryId);
+            $post->setCategory($category);
+        }
+
+        $post->setSlug($command->slug);
     }
 }

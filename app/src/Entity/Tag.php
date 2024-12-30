@@ -13,7 +13,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
-class Tag implements SlugEntity, ApiEntity, TimestampableEntity
+class Tag implements Entity, SlugEntity, ApiEntity, TimestampableEntity
 {
     use SlugTrait;
     use TimestampableTrait;
@@ -33,6 +33,11 @@ class Tag implements SlugEntity, ApiEntity, TimestampableEntity
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 
     public function getId(): ?int

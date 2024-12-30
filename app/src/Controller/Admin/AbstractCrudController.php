@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Bus\Bus;
 use App\Bus\Command\DeleteCommand;
+use App\Bus\Query\GetByIdQuery;
 use App\Service\ControllerUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -30,9 +31,15 @@ abstract class AbstractCrudController extends EasyCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
+        $crud = parent::configureCrud($crud);
+
         return $crud
             ->showEntityActionsInlined()
-            ->setDefaultSort(['name' => 'ASC'])
+            ->overrideTemplate(
+                templateName: 'crud/edit',
+                templatePath: 'admin/crud/edit.html.twig',
+            )
+            ->setDefaultSort(['createdAt' => 'DESC'])
         ;
     }
 
@@ -83,7 +90,14 @@ abstract class AbstractCrudController extends EasyCrudController
             return;
         }
 
-        $this->bus->command(new DeleteCommand($className, $entityInstance->getId()));
-        $this->addFlash('success', 'Removed successfully');
+        $id = $entityInstance->getId();
+        $this->bus->command(new DeleteCommand($className, $id));
+        if (null === $this->bus->query(new GetByIdQuery($id, $className))) {
+            $this->addFlash('success', 'Removed successfully');
+
+            return;
+        }
+
+        $this->addFlash('warning', 'It failed to remove');
     }
 }

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class Admin implements UserInterface, PasswordAuthenticatedUserInterface, TimestampableEntity
+class Admin implements Entity, UserInterface, PasswordAuthenticatedUserInterface, TimestampableEntity
 {
     use TimestampableTrait;
 

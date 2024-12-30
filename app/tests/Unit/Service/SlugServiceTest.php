@@ -6,7 +6,6 @@ namespace App\Tests\Unit\Service;
 
 use App\Entity\Category;
 use App\Exception\SlugServiceException;
-use App\Service\RandomStringGenerator;
 use App\Service\SlugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -16,7 +15,6 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 final class SlugServiceTest extends TestCase
 {
-    private const DEFAULT_RANDOM_LENGTH = 8;
     private EntityManagerInterface&MockObject $entityManager;
     private SlugService $slugService;
 
@@ -28,9 +26,7 @@ final class SlugServiceTest extends TestCase
 
         $this->slugService = new SlugService(
             slugger: new AsciiSlugger(),
-            randomStringGenerator: new RandomStringGenerator(),
             entityManager: $this->entityManager,
-            randomSlugLength: self::DEFAULT_RANDOM_LENGTH,
         );
     }
 
@@ -51,6 +47,10 @@ final class SlugServiceTest extends TestCase
             'expected' => 'test-with-spaces',
         ];
         yield [
+            'value' => 'Jakiś polski tytuł',
+            'expected' => 'jakis-polski-tytul',
+        ];
+        yield [
             'value' => '',
             'expected' => '',
         ];
@@ -67,27 +67,7 @@ final class SlugServiceTest extends TestCase
         );
     }
 
-    public function testGenerateRandom(): void
-    {
-        $randomValue = $this->slugService->generateRandom(10);
-
-        $this->assertEquals(
-            strtolower(substr($randomValue, 0, 10)),
-            $randomValue
-        );
-    }
-
-    public function testGenerateRandomWithDefaultLength(): void
-    {
-        $randomValue = $this->slugService->generateRandom();
-
-        $this->assertEquals(
-            strtolower(substr($randomValue, 0, self::DEFAULT_RANDOM_LENGTH)),
-            $randomValue
-        );
-    }
-
-    public function testUnique(): void
+    public function testUniqueSuccessfully(): void
     {
         $repository = $this->createMock(EntityRepository::class);
         $repository->expects(self::exactly(2))
@@ -115,7 +95,7 @@ final class SlugServiceTest extends TestCase
         $this->expectException(SlugServiceException::class);
         $this->expectExceptionMessage('Class random-class-name does not exist');
 
-        $this->slugService->unique('random-class-name');
+        $this->slugService->unique('random-class-name', 'value');
     }
 
     public function testUniqueThrowsClassDoesNotImplementSlugEntityException(): void
@@ -123,6 +103,6 @@ final class SlugServiceTest extends TestCase
         $this->expectException(SlugServiceException::class);
         $this->expectExceptionMessage('Class '.self::class.' does not implement SlugEntity');
 
-        $this->slugService->unique(self::class);
+        $this->slugService->unique(self::class, 'value');
     }
 }

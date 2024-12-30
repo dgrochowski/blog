@@ -18,7 +18,7 @@ class CreateTagCommandHandler implements CommandHandlerInterface
 
     public function __invoke(CreateTagCommand $command): void
     {
-        $uniqueSlug = $this->slugService->unique(Tag::class, $command->slug);
+        $uniqueSlug = $this->slugService->unique(Tag::class, $command->slug ?? $command->name);
 
         $tag = new Tag();
         $tag->setName($command->name);

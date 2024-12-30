@@ -8,21 +8,18 @@ use App\Bus\Command\UpdateTagCommand;
 use App\Bus\Command\UpdateTagCommandHandler;
 use App\Entity\Tag;
 use App\Repository\TagRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateTagCommandHandlerTest extends TestCase
 {
-    private TagRepository&MockObject $tagRepository;
-    private EntityManagerInterface&MockObject $entityManager;
+    private TagRepository|MockObject $tagRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->tagRepository = $this->createMock(TagRepository::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
     }
 
     public function testUpdateTagCommandHandlerNothingToUpdate(): void
@@ -32,9 +29,6 @@ final class UpdateTagCommandHandlerTest extends TestCase
             ->with(321)
             ->willReturn(null);
 
-        $this->entityManager->expects(self::never())
-            ->method('persist');
-
         $command = new UpdateTagCommand(
             id: 321,
             name: 'Test Tag',
@@ -43,7 +37,6 @@ final class UpdateTagCommandHandlerTest extends TestCase
 
         new UpdateTagCommandHandler(
             $this->tagRepository,
-            $this->entityManager,
         )($command);
     }
 
@@ -61,10 +54,6 @@ final class UpdateTagCommandHandlerTest extends TestCase
         $tag->setName('New Test Tag');
         $tag->setSlug('new-slug');
 
-        $this->entityManager->expects(self::once())
-            ->method('persist')
-            ->with($tag);
-
         $command = new UpdateTagCommand(
             id: 321,
             name: 'New Test Tag',
@@ -73,7 +62,6 @@ final class UpdateTagCommandHandlerTest extends TestCase
 
         new UpdateTagCommandHandler(
             $this->tagRepository,
-            $this->entityManager,
         )($command);
     }
 }

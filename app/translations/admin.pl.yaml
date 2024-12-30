@@ -10,13 +10,21 @@ Categories: Kategorie
 Category: Kategoria
 Tag: Tag
 Tags: Tagi
+Post: Artykuł
+Posts: Artykuły
 Slug: Ścieżka
 New slug: Nowa ścieżka
 Slug already taken: Ścieżka jest już zajęta
+Image: Obraz
+Update image: Zaktualizuj obraz
+Content: Treść
 Admin with the specified e-mail address exists: Administrator z podanym adresem e-mail istnieje
 You cannot delete your account: Nie możesz usunąć swojego konta
 Added successfully: Dodano pomyślnie
 Updated successfully: Zaktualizowano pomyślnie
 Removed successfully: Usunięto pomyślnie
+It failed to remove: Nie udało się usunąć
 Created At: Utworzono
 Updated At: Zaktualizowano
+"Allowed file types: jpg, png, etc.": "Dozwolone typy plików: jpg, png, itd."
+An error occurred while uploading the file: Wystąpił błąd podczas dodawania pliku

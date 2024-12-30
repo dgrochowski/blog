@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Bus\Command;
 
 use App\Repository\AdminRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UpdateAdminCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private AdminRepository $adminRepository,
         private UserPasswordHasherInterface $passwordHasher,
     ) {
@@ -31,7 +29,5 @@ class UpdateAdminCommandHandler implements CommandHandlerInterface
             $hashedPassword = $this->passwordHasher->hashPassword($admin, $command->password);
             $admin->setPassword($hashedPassword);
         }
-
-        $this->entityManager->persist($admin);
     }
 }

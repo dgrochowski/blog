@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Traits\FileTrait;
 use App\Entity\Traits\SlugTrait;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,9 +14,10 @@ use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
-class Post implements SlugEntity, ApiEntity, TimestampableEntity
+class Post implements Entity, SlugEntity, ApiEntity, TimestampableEntity
 {
     use SlugTrait;
+    use FileTrait;
     use TimestampableTrait;
 
     #[ORM\Id]
@@ -30,21 +32,22 @@ class Post implements SlugEntity, ApiEntity, TimestampableEntity
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToOne(targetEntity: File::class, cascade: ['remove'], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: 'file_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-    private ?File $file = null;
-
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'posts')]
     #[ORM\JoinTable(name: 'posts_tags')]
     private Collection $tags;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts')]
-    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?Category $category = null;
 
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 
     public function getId(): ?int
@@ -76,18 +79,6 @@ class Post implements SlugEntity, ApiEntity, TimestampableEntity
         return $this;
     }
 
-    public function getFile(): ?File
-    {
-        return $this->file;
-    }
-
-    public function setFile(?File $file): self
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
     public function getTags(): Collection
     {
         return $this->tags;
@@ -96,7 +87,6 @@ class Post implements SlugEntity, ApiEntity, TimestampableEntity
     public function addTag(Tag $tag): self
     {
         if (!$this->tags->contains($tag)) {
-            $tag->addPost($this);
             $this->tags[] = $tag;
         }
 
@@ -118,14 +108,7 @@ class Post implements SlugEntity, ApiEntity, TimestampableEntity
 
     public function setCategory(?Category $category): self
     {
-        if (null !== $this->category) {
-            $this->category->removePost($this);
-        }
-
         $this->category = $category;
-        if (null !== $category) {
-            $category->addPost($this);
-        }
 
         return $this;
     }

@@ -18,7 +18,7 @@ class CreateCategoryCommandHandler implements CommandHandlerInterface
 
     public function __invoke(CreateCategoryCommand $command): void
     {
-        $uniqueSlug = $this->slugService->unique(Category::class, $command->slug);
+        $uniqueSlug = $this->slugService->unique(Category::class, $command->slug ?? $command->name);
 
         $category = new Category();
         $category->setName($command->name);

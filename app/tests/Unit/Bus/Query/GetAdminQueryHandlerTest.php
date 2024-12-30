@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GetAdminQueryHandlerTest extends TestCase
 {
-    private AdminRepository&MockObject $adminRepository;
+    private AdminRepository|MockObject $adminRepository;
 
     protected function setUp(): void
     {

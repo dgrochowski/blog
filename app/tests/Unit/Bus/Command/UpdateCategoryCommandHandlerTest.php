@@ -8,21 +8,18 @@ use App\Bus\Command\UpdateCategoryCommand;
 use App\Bus\Command\UpdateCategoryCommandHandler;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateCategoryCommandHandlerTest extends TestCase
 {
-    private CategoryRepository&MockObject $categoryRepository;
-    private EntityManagerInterface&MockObject $entityManager;
+    private CategoryRepository|MockObject $categoryRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->categoryRepository = $this->createMock(CategoryRepository::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
     }
 
     public function testUpdateCategoryCommandHandlerNothingToUpdate(): void
@@ -32,9 +29,6 @@ final class UpdateCategoryCommandHandlerTest extends TestCase
             ->with(321)
             ->willReturn(null);
 
-        $this->entityManager->expects(self::never())
-            ->method('persist');
-
         $command = new UpdateCategoryCommand(
             id: 321,
             name: 'Test Category',
@@ -43,7 +37,6 @@ final class UpdateCategoryCommandHandlerTest extends TestCase
 
         new UpdateCategoryCommandHandler(
             $this->categoryRepository,
-            $this->entityManager,
         )($command);
     }
 
@@ -61,10 +54,6 @@ final class UpdateCategoryCommandHandlerTest extends TestCase
         $category->setName('New Test Category');
         $category->setSlug('new-slug');
 
-        $this->entityManager->expects(self::once())
-            ->method('persist')
-            ->with($category);
-
         $command = new UpdateCategoryCommand(
             id: 321,
             name: 'New Test Category',
@@ -73,7 +62,6 @@ final class UpdateCategoryCommandHandlerTest extends TestCase
 
         new UpdateCategoryCommandHandler(
             $this->categoryRepository,
-            $this->entityManager,
         )($command);
     }
 }
