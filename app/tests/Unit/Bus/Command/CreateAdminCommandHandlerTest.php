@@ -14,8 +14,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class CreateAdminCommandHandlerTest extends TestCase
 {
-    private EntityManagerInterface&MockObject $entityManager;
-    private UserPasswordHasherInterface&MockObject $passwordHasher;
+    private EntityManagerInterface|MockObject $entityManager;
+    private UserPasswordHasherInterface|MockObject $passwordHasher;
 
     protected function setUp(): void
     {

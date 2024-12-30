@@ -10,13 +10,21 @@ Categories: Categories
 Category: Category
 Tag: Tag
 Tags: Tags
+Post: Post
+Posts: Posts
 Slug: Slug
 New slug: New slug
 Slug already taken: Slug already taken
+Image: Image
+Update image: Update image
+Content: Content
 Admin with the specified e-mail address exists: Admin with the specified e-mail address exists
 You cannot delete your account: You cannot delete your account
 Added successfully: Added successfully
 Updated successfully: Updated successfully
 Removed successfully: Removed successfully
+It failed to remove: It failed to remove
 Created At: Created At
 Updated At: Updated At
+"Allowed file types: jpg, png, etc.": "Allowed file types: jpg, png, etc."
+An error occurred while uploading the file: An error occurred while uploading the file

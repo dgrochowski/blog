@@ -81,7 +81,7 @@ final class FileServiceTest extends KernelTestCase
         $fileSize = $uploadedFile->getSize();
         $mimeType = $uploadedFile->getMimeType();
 
-        $file = $this->fileService->upload($uploadedFile);
+        $file = $this->fileService->upload($uploadedFile, 'test-slug');
 
         $this->assertTrue(file_exists(
             self::IMAGES_DIRECTORY
@@ -95,63 +95,7 @@ final class FileServiceTest extends KernelTestCase
         $this->assertEquals('imageFileName.jpg', $file->getOriginalName());
         $this->assertEquals($fileSize, $file->getSize());
         $this->assertEquals($mimeType, $file->getMimeType());
-    }
-
-    /**
-     * @return iterable<string, array{
-     *     isImage: bool,
-     *     createdAt: null|\DateTime,
-     *     expectedDir: string,
-     * }>
-     */
-    public static function directoryData(): iterable
-    {
-        yield 'image with createdAt date' => [
-            'isImage' => true,
-            'createdAt' => new \DateTime('2025-01-01 12:00'),
-            'expectedDir' => self::IMAGES_DIRECTORY.DIRECTORY_SEPARATOR.'250101',
-        ];
-
-        yield 'file with createdAt date' => [
-            'isImage' => false,
-            'createdAt' => new \DateTime('2025-01-01 12:00'),
-            'expectedDir' => self::FILES_DIRECTORY.DIRECTORY_SEPARATOR.'250101',
-        ];
-
-        yield 'image without createdAt date' => [
-            'isImage' => true,
-            'createdAt' => null,
-            'expectedDir' => self::IMAGES_DIRECTORY.DIRECTORY_SEPARATOR.'241228',
-        ];
-    }
-
-    /**
-     * @dataProvider directoryData
-     */
-    public function testDirectory(bool $isImage, ?\DateTime $createdAt, string $expectedDir): void
-    {
-        $this->clock->method('now')->willReturn(new \DateTimeImmutable('2024-12-28 12:00'));
-
-        $file = new File();
-        $file->setIsImage($isImage);
-        if (null !== $createdAt) {
-            $file->setCreatedAt($createdAt);
-        }
-
-        $this->assertEquals($expectedDir, $this->fileService->directory($file));
-    }
-
-    public function testFullPath(): void
-    {
-        $file = new File();
-        $file->setIsImage(false);
-        $file->setCreatedAt(new \DateTime('2025-01-15 12:00'));
-        $file->setFileName('imageFileName.jpg');
-
-        $this->assertEquals(
-            self::FILES_DIRECTORY.DIRECTORY_SEPARATOR.'250115'.DIRECTORY_SEPARATOR.'imageFileName.jpg',
-            $this->fileService->fullPath($file),
-        );
+        $this->assertEquals('test-slug', $file->getSlug());
     }
 
     public function testDelete(): void
@@ -164,12 +108,12 @@ final class FileServiceTest extends KernelTestCase
             ->with('test.txt')
             ->willReturn(new UnicodeString('slugged-name.txt'));
 
-        $this->clock->expects(self::exactly(2))
+        $this->clock->expects(self::once())
             ->method('now')
             ->willReturn($time);
 
         $uploadedFile = $this->createTextUploadedFile('test.txt');
-        $file = $this->fileService->upload($uploadedFile);
+        $file = $this->fileService->upload($uploadedFile, 'test-slug');
 
         $this->assertTrue(file_exists(
             self::FILES_DIRECTORY
@@ -206,53 +150,9 @@ final class FileServiceTest extends KernelTestCase
         $file->setIsImage(false);
         $file->setCreatedAt(new \DateTime('2025-01-25 12:00'));
         $file->setFileName('textFileName.txt');
+        $file->setDirectory('250125');
 
         $this->fileService->delete($file);
-    }
-
-    /**
-     * @return iterable<string, array{
-     *     mimeType: string,
-     *     isImage: Bool,
-     * }>
-     */
-    public static function isImageData(): iterable
-    {
-        yield 'image/jpeg' => [
-            'mimeType' => 'image/jpeg',
-            'isImage' => true,
-        ];
-
-        yield 'image/png' => [
-            'mimeType' => 'image/png',
-            'isImage' => true,
-        ];
-
-        yield 'image/gif' => [
-            'mimeType' => 'image/gif',
-            'isImage' => true,
-        ];
-
-        yield 'application/pdf' => [
-            'mimeType' => 'application/pdf',
-            'isImage' => false,
-        ];
-
-        yield 'text/plain' => [
-            'mimeType' => 'text/plain',
-            'isImage' => false,
-        ];
-    }
-
-    /**
-     * @dataProvider isImageData
-     */
-    public function testIsImage(string $mimeType, bool $isImage): void
-    {
-        $this->assertEquals(
-            $isImage,
-            $this->fileService->isImage($mimeType),
-        );
     }
 
     private function createImageUploadedFile(string $originalName): UploadedFile

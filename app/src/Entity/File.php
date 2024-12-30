@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Traits\SlugTrait;
 use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FileRepository::class)]
-class File implements TimestampableEntity
+class File implements Entity, SlugEntity, TimestampableEntity
 {
+    use SlugTrait;
     use TimestampableTrait;
 
     #[ORM\Id]
@@ -29,6 +31,10 @@ class File implements TimestampableEntity
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private string $originalName;
+
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 255)]
+    private string $directory;
 
     #[ORM\Column(type: 'integer')]
     private int $size;
@@ -73,6 +79,18 @@ class File implements TimestampableEntity
     public function setOriginalName(string $originalName): self
     {
         $this->originalName = $originalName;
+
+        return $this;
+    }
+
+    public function getDirectory(): string
+    {
+        return $this->directory;
+    }
+
+    public function setDirectory(string $directory): self
+    {
+        $this->directory = $directory;
 
         return $this;
     }

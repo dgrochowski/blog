@@ -19,9 +19,9 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 final class BusTest extends TestCase
 {
-    private MessageBusInterface&MockObject $queryBus;
-    private MessageBusInterface&MockObject $commandBus;
-    private LoggerInterface&MockObject $logger;
+    private MessageBusInterface|MockObject $queryBus;
+    private MessageBusInterface|MockObject $commandBus;
+    private LoggerInterface|MockObject $logger;
     private Bus $bus;
 
     protected function setUp(): void

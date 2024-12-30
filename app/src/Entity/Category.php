@@ -13,7 +13,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class Category implements SlugEntity, ApiEntity, TimestampableEntity
+class Category implements Entity, SlugEntity, ApiEntity, TimestampableEntity
 {
     use SlugTrait;
     use TimestampableTrait;
@@ -35,6 +35,11 @@ class Category implements SlugEntity, ApiEntity, TimestampableEntity
         $this->posts = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->name ?? '';
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,6 +55,11 @@ class Category implements SlugEntity, ApiEntity, TimestampableEntity
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getPosts(): Collection
+    {
+        return $this->posts;
     }
 
     public function addPost(Post $post): void

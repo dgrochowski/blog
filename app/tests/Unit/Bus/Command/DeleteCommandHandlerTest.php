@@ -14,8 +14,8 @@ use PHPUnit\Framework\TestCase;
 
 final class DeleteCommandHandlerTest extends TestCase
 {
-    private TagRepository&MockObject $tagRepository;
-    private EntityManagerInterface&MockObject $entityManager;
+    private TagRepository|MockObject $tagRepository;
+    private EntityManagerInterface|MockObject $entityManager;
 
     protected function setUp(): void
     {

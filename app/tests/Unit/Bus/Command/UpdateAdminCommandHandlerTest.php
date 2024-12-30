@@ -8,22 +8,19 @@ use App\Bus\Command\UpdateAdminCommand;
 use App\Bus\Command\UpdateAdminCommandHandler;
 use App\Entity\Admin;
 use App\Repository\AdminRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UpdateAdminCommandHandlerTest extends TestCase
 {
-    private EntityManagerInterface&MockObject $entityManager;
-    private AdminRepository&MockObject $adminRepository;
-    private UserPasswordHasherInterface&MockObject $passwordHasher;
+    private AdminRepository|MockObject $adminRepository;
+    private UserPasswordHasherInterface|MockObject $passwordHasher;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->adminRepository = $this->createMock(AdminRepository::class);
         $this->passwordHasher = $this->createMock(UserPasswordHasherInterface::class);
     }
@@ -37,8 +34,6 @@ final class UpdateAdminCommandHandlerTest extends TestCase
 
         $this->passwordHasher->expects(self::never())
             ->method('hashPassword');
-        $this->entityManager->expects(self::never())
-            ->method('persist');
 
         $command = new UpdateAdminCommand(
             id: 123,
@@ -48,7 +43,6 @@ final class UpdateAdminCommandHandlerTest extends TestCase
         );
 
         new UpdateAdminCommandHandler(
-            $this->entityManager,
             $this->adminRepository,
             $this->passwordHasher,
         )($command);
@@ -71,10 +65,6 @@ final class UpdateAdminCommandHandlerTest extends TestCase
         $admin->setName('New Admin');
         $admin->setEmail('admin@admin.admin');
 
-        $this->entityManager->expects(self::once())
-            ->method('persist')
-            ->with($admin);
-
         $command = new UpdateAdminCommand(
             id: 123,
             name: 'New Admin',
@@ -83,7 +73,6 @@ final class UpdateAdminCommandHandlerTest extends TestCase
         );
 
         new UpdateAdminCommandHandler(
-            $this->entityManager,
             $this->adminRepository,
             $this->passwordHasher,
         )($command);
@@ -110,10 +99,6 @@ final class UpdateAdminCommandHandlerTest extends TestCase
         $admin->setEmail('admin@admin.admin');
         $admin->setPassword('hashed-password');
 
-        $this->entityManager->expects(self::once())
-            ->method('persist')
-            ->with($admin);
-
         $command = new UpdateAdminCommand(
             id: 123,
             name: 'New Admin',
@@ -122,7 +107,6 @@ final class UpdateAdminCommandHandlerTest extends TestCase
         );
 
         new UpdateAdminCommandHandler(
-            $this->entityManager,
             $this->adminRepository,
             $this->passwordHasher,
         )($command);
