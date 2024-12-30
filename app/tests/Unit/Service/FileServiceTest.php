@@ -63,7 +63,7 @@ final class FileServiceTest extends KernelTestCase
         rmdir(directory: $directory);
     }
 
-    public function testUpload(): void
+    public function testUploadSuccessfully(): void
     {
         $expectedDir = '241228';
         $time = new \DateTimeImmutable('2024-12-28 12:00');
@@ -79,6 +79,7 @@ final class FileServiceTest extends KernelTestCase
 
         $uploadedFile = $this->createImageUploadedFile('imageFileName.jpg');
         $fileSize = $uploadedFile->getSize();
+        $fileSize = round($fileSize * 0.000001, 2); // Bytes to MB
         $mimeType = $uploadedFile->getMimeType();
 
         $file = $this->fileService->upload($uploadedFile, 'test-slug');

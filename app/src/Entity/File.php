@@ -16,6 +16,8 @@ class File implements Entity, SlugEntity, TimestampableEntity
 {
     use SlugTrait;
     use TimestampableTrait;
+    private const PUBLIC_IMAGES_PATH = '/uploads/images';
+    private const PUBLIC_FILES_PATH = '/uploads/files';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -98,7 +100,7 @@ class File implements Entity, SlugEntity, TimestampableEntity
 
     public function getSize(): int
     {
-        return $this->size;
+        return (int) round($this->size * 0.000001, 2); // Bytes to MB
     }
 
     public function setSize(int $size): self
@@ -118,5 +120,16 @@ class File implements Entity, SlugEntity, TimestampableEntity
         $this->mimeType = $mimeType;
 
         return $this;
+    }
+
+    public function getFilePath(): ?string
+    {
+        $publicPath = $this->getIsImage() ? self::PUBLIC_IMAGES_PATH : self::PUBLIC_FILES_PATH;
+
+        return $publicPath
+            .DIRECTORY_SEPARATOR
+            .$this->getDirectory()
+            .DIRECTORY_SEPARATOR
+            .$this->getFilename();
     }
 }
