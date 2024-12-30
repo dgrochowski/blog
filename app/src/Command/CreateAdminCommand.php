@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Bus\Bus;
-use App\Bus\Command\CreateAdminCommand as BusCreateAdminCommand;
-use App\Repository\AdminRepository;
+use App\Bus\Command\CreateUserCommand as BusCreateAdminCommand;
+use App\Repository\UserRepository;
 use App\Service\RandomStringGenerator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -26,27 +26,27 @@ class CreateAdminCommand extends Command
     private ValidatorInterface $validator;
     private Bus $bus;
     private RandomStringGenerator $randomStringGenerator;
-    private AdminRepository $adminRepository;
+    private UserRepository $userRepository;
 
     public function __construct(
         ValidatorInterface $validator,
         Bus $bus,
         RandomStringGenerator $randomStringGenerator,
-        AdminRepository $adminRepository,
+        UserRepository $userRepository,
     ) {
         parent::__construct();
 
         $this->validator = $validator;
         $this->bus = $bus;
         $this->randomStringGenerator = $randomStringGenerator;
-        $this->adminRepository = $adminRepository;
+        $this->userRepository = $userRepository;
     }
 
     protected function configure(): void
     {
         $this
-            ->addArgument('name', InputArgument::REQUIRED, 'Admin name')
-            ->addArgument('email', InputArgument::REQUIRED, 'Admin email')
+            ->addArgument('name', InputArgument::REQUIRED, 'User name')
+            ->addArgument('email', InputArgument::REQUIRED, 'User email')
         ;
     }
 
@@ -64,7 +64,7 @@ class CreateAdminCommand extends Command
         ]);
         $violations = $this->validator->validate($email, $emailConstraint);
 
-        if (null !== $this->adminRepository->findOneByEmail($email)) {
+        if (null !== $this->userRepository->findOneByEmail($email)) {
             $output->writeln("<error>Admin with email \"$email\" already exists.</error>");
 
             return Command::FAILURE;
@@ -77,7 +77,8 @@ class CreateAdminCommand extends Command
             $this->bus->command(new BusCreateAdminCommand(
                 name: $name,
                 email: $email,
-                password: $password,
+                updatedPassword: $password,
+                roles: ['ROLE_ADMIN'],
             ));
             $output->writeln("<fg=green>Admin $name<$email> created! Password:$password</>");
 

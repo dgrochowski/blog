@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Bus\Command;
 
-final readonly class CreateAdminCommand implements CommandInterface
+final readonly class CreateUserCommand implements CommandInterface
 {
     /**
      * @param string[] $roles
@@ -12,8 +12,8 @@ final readonly class CreateAdminCommand implements CommandInterface
     public function __construct(
         public string $name,
         public string $email,
-        public string $password,
-        public array $roles = ['ROLE_ADMIN'],
+        public string $updatedPassword,
+        public array $roles = ['ROLE_USER'],
     ) {
     }
 }

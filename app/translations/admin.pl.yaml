@@ -1,5 +1,10 @@
 Hello %user%!: Cześć %user%!
+User: Użytkownik
+Users: Użytkownicy
 Admin: Admin
+Editor: Edytor
+Roles: Role
+Is Admin: Administrator
 Dashboard: Panel
 Blog: Blog
 ID: ID
@@ -18,7 +23,7 @@ Slug already taken: Ścieżka jest już zajęta
 Image: Obraz
 Update image: Zaktualizuj obraz
 Content: Treść
-Admin with the specified e-mail address exists: Administrator z podanym adresem e-mail istnieje
+User with the specified e-mail address exists: Użytkownik z podanym adresem e-mail istnieje
 You cannot delete your account: Nie możesz usunąć swojego konta
 Added successfully: Dodano pomyślnie
 Updated successfully: Zaktualizowano pomyślnie

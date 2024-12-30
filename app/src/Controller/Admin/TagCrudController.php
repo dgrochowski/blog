@@ -6,7 +6,9 @@ use App\Entity\Tag;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_EDITOR', statusCode: 423)]
 class TagCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
