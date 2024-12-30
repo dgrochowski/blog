@@ -56,6 +56,7 @@ final class CreatePostCommandHandlerTest extends TestCase
         $category->setName('Category');
         $category->setSlug('category');
 
+        $publishedAt = new \DateTimeImmutable();
         $post = new Post();
         $post->setName('Test Post');
         $post->setSlug('test-post');
@@ -64,6 +65,7 @@ final class CreatePostCommandHandlerTest extends TestCase
         $post->addTag($tag1);
         $post->addTag($tag2);
         $post->setCategory($category);
+        $post->setPublishedAt($publishedAt);
 
         $this->tagRepository->expects(self::exactly(2))
             ->method('find')
@@ -78,6 +80,7 @@ final class CreatePostCommandHandlerTest extends TestCase
 
         $command = new CreatePostCommand(
             name: 'Test Post',
+            publishedAt: $publishedAt,
             description: 'Test description',
             uploadImageName: 'test-post.jpg',
             tags: new ArrayCollection([$tag1, $tag2]),
@@ -123,6 +126,7 @@ final class CreatePostCommandHandlerTest extends TestCase
         $category->setName('Category');
         $category->setSlug('category');
 
+        $publishedAt = new \DateTimeImmutable();
         $post = new Post();
         $post->setName('Test Post');
         $post->setSlug('test-post');
@@ -131,6 +135,7 @@ final class CreatePostCommandHandlerTest extends TestCase
         $post->addTag($tag1);
         $post->addTag($tag2);
         $post->setCategory($category);
+        $post->setPublishedAt($publishedAt);
 
         $this->tagRepository->expects(self::exactly(2))
             ->method('find')
@@ -145,6 +150,7 @@ final class CreatePostCommandHandlerTest extends TestCase
 
         $command = new CreatePostCommand(
             name: 'Test Post',
+            publishedAt: $publishedAt,
             description: 'Test description',
             uploadImageName: 'test-post.jpg',
             tags: new ArrayCollection([$tag1, $tag2]),
@@ -168,11 +174,13 @@ final class CreatePostCommandHandlerTest extends TestCase
             ->method('unique')
             ->willReturn('test-post');
 
+        $publishedAt = new \DateTimeImmutable();
         $post = new Post();
         $post->setName('Test Post');
         $post->setSlug('test-post');
         $post->setDescription('Test description');
         $post->setUploadImageName('test-post.jpg');
+        $post->setPublishedAt($publishedAt);
 
         $this->tagRepository->expects(self::never())
             ->method('find');
@@ -184,6 +192,7 @@ final class CreatePostCommandHandlerTest extends TestCase
 
         $command = new CreatePostCommand(
             name: 'Test Post',
+            publishedAt: $publishedAt,
             description: 'Test description',
             uploadImageName: 'test-post.jpg',
             tags: new ArrayCollection(),

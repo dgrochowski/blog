@@ -42,6 +42,11 @@ class User implements Entity, UserInterface, PasswordAuthenticatedUserInterface,
 
     private ?string $updatedPassword = null;
 
+    public function __toString(): string
+    {
+        return $this->name ?? '';
+    }
+
     public function getId(): ?int
     {
         return $this->id;

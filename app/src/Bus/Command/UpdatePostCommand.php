@@ -16,6 +16,7 @@ final readonly class UpdatePostCommand implements CommandInterface
     public function __construct(
         public int $id,
         public string $name,
+        public \DateTimeInterface $publishedAt,
         public ?string $description,
         public ?string $uploadImageName,
         public Collection $tags,

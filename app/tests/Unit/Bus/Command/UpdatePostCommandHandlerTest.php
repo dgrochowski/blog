@@ -41,6 +41,7 @@ final class UpdatePostCommandHandlerTest extends TestCase
         $command = new UpdatePostCommand(
             id: 321,
             name: 'Test Post',
+            publishedAt: new \DateTimeImmutable(),
             description: 'Test Post description',
             uploadImageName: null,
             tags: new ArrayCollection(),
@@ -73,6 +74,7 @@ final class UpdatePostCommandHandlerTest extends TestCase
         $category->setName('Category');
         $category->setSlug('category');
 
+        $publishedAt = new \DateTimeImmutable();
         $post = new Post();
         $post->setName('Test Post');
         $post->setSlug('test-post');
@@ -81,6 +83,7 @@ final class UpdatePostCommandHandlerTest extends TestCase
         $post->addTag($tag1);
         $post->addTag($tag2);
         $post->setCategory($category);
+        $post->setPublishedAt($publishedAt);
 
         $this->postRepository->expects(self::once())
             ->method('find')
@@ -97,6 +100,7 @@ final class UpdatePostCommandHandlerTest extends TestCase
         $command = new UpdatePostCommand(
             id: 321,
             name: 'Test Post',
+            publishedAt: $publishedAt,
             description: 'Test description',
             uploadImageName: 'test-post.jpg',
             tags: new ArrayCollection([$tag1, $tag2]),
@@ -131,6 +135,7 @@ final class UpdatePostCommandHandlerTest extends TestCase
         $command = new UpdatePostCommand(
             id: 321,
             name: 'Test Post',
+            publishedAt: new \DateTimeImmutable(),
             description: 'Test description',
             uploadImageName: 'test-post.jpg',
             tags: new ArrayCollection(),

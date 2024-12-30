@@ -15,6 +15,7 @@ final readonly class CreatePostCommand implements CommandInterface
      */
     public function __construct(
         public string $name,
+        public \DateTimeInterface $publishedAt,
         public ?string $description,
         public ?string $uploadImageName,
         public Collection $tags,

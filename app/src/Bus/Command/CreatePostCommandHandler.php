@@ -26,6 +26,7 @@ class CreatePostCommandHandler implements CommandHandlerInterface
 
         $post = new Post();
         $post->setName($command->name);
+        $post->setPublishedAt($command->publishedAt);
         $post->setDescription($command->description);
         $post->setUploadImageName($command->uploadImageName);
         foreach ($command->tags->toArray() as $lazyTag) {
