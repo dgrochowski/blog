@@ -16,6 +16,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN', statusCode: 423)]
 class FileCrudController extends AbstractCrudController
 {
+    private const UPLOADS_PATH = '/public/uploads/temp';
+
     public static function getEntityFqcn(): string
     {
         return File::class;
@@ -31,37 +33,47 @@ class FileCrudController extends AbstractCrudController
         $actions = parent::configureActions($actions);
 
         return $actions
-            ->disable(Action::EDIT, Action::NEW)
+            ->disable(Action::EDIT)
         ;
     }
 
     public function getEntityFields(): array
     {
         return [
-            'isImage',
-            'fileName',
-            'originalName',
-            'size',
-            'directory',
+            'uploadImageName',
             'slug',
         ];
     }
 
     public function configureFields(string $pageName): iterable
     {
-        yield IdField::new('id')->hideOnForm();
+        yield IdField::new('id')
+            ->hideOnForm();
         yield ImageField::new('filePath')
-                ->setLabel('Image');
+            ->setLabel('Image')
+            ->onlyOnIndex();
+        yield ImageField::new('uploadImageName')
+            ->setLabel('Update image')
+            ->hideOnIndex()
+            ->setRequired(false)
+            ->setUploadDir(self::UPLOADS_PATH)
+            ->setHelp('Allowed file types: jpg, png, etc.');
         yield BooleanField::new('isImage')
-            ->setDisabled();
-        yield TextField::new('fileName', 'Name');
-        yield TextField::new('originalName');
-        yield NumberField::new('size', 'Size [MB]');
-        yield TextField::new('directory');
-        yield TextField::new('slug');
+            ->setDisabled()
+            ->onlyOnIndex();
+        yield TextField::new('fileName', 'Name')
+            ->onlyOnIndex();
+        yield TextField::new('originalName')
+            ->onlyOnIndex();
+        yield NumberField::new('size', 'Size [MB]')
+            ->onlyOnIndex();
+        yield TextField::new('directory')
+            ->onlyOnIndex();
+        yield TextField::new('slug')
+            ->setRequired(false);
         yield DateTimeField::new('createdAt')
-                ->onlyOnIndex();
+            ->onlyOnIndex();
         yield DateTimeField::new('updatedAt')
-                ->onlyOnIndex();
+            ->onlyOnIndex();
     }
 }
