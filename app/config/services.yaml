@@ -7,6 +7,7 @@ parameters:
     images_directory: '%kernel.project_dir%/public/uploads/images'
     files_directory: '%kernel.project_dir%/public/uploads/files'
     temp_directory: '%kernel.project_dir%/public/uploads/temp'
+    settings_addable: '%env(bool:SETTINGS_ADDABLE)%'
 
 services:
     # default configuration for services in *this* file
