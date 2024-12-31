@@ -33,6 +33,7 @@ final class UpdateSocialCommandHandlerTest extends TestCase
             id: 321,
             name: 'Test Social',
             value: 'Test Value',
+            uploadImageName: 'test-social.jpg',
             slug: 'old-slug',
         );
 
@@ -46,6 +47,7 @@ final class UpdateSocialCommandHandlerTest extends TestCase
         $social = new Social();
         $social->setName('Test Social');
         $social->setValue('Test Value');
+        $social->setUploadImageName('test-social.jpg');
         $social->setSlug('old-slug');
 
         $this->socialRepository->expects(self::once())
@@ -55,12 +57,14 @@ final class UpdateSocialCommandHandlerTest extends TestCase
 
         $social->setName('New Test Social');
         $social->setValue('Test Value');
+        $social->setUploadImageName('new-social.jpg');
         $social->setSlug('new-slug');
 
         $command = new UpdateSocialCommand(
             id: 321,
             name: 'Test Social',
             value: 'Test Value',
+            uploadImageName: 'new-social.jpg',
             slug: 'old-slug',
         );
 

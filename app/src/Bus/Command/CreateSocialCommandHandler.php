@@ -23,6 +23,7 @@ class CreateSocialCommandHandler implements CommandHandlerInterface
         $social = new Social();
         $social->setName($command->name);
         $social->setValue($command->value);
+        $social->setUploadImageName($command->uploadImageName);
         $social->setSlug($uniqueSlug);
 
         $this->entityManager->persist($social);

@@ -13,7 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_EDITOR', statusCode: 423)]
+#[IsGranted('ROLE_ADMIN', statusCode: 423)]
 class FileCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

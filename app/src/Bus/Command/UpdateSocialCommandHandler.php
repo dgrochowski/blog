@@ -22,6 +22,7 @@ class UpdateSocialCommandHandler implements CommandHandlerInterface
 
         $social->setName($command->name);
         $social->setValue($command->value);
+        $social->setUploadImageName($command->uploadImageName);
         $social->setSlug($command->slug);
     }
 }

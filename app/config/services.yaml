@@ -42,6 +42,10 @@ services:
         arguments:
             $tempDirectory: '%temp_directory%'
 
+    App\EventListener\SocialPreFlushListener:
+        arguments:
+            $tempDirectory: '%temp_directory%'
+
     App\Controller\Admin\SettingCrudController:
         arguments:
             $settingsAddable: '%settings_addable%'

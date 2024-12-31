@@ -154,7 +154,9 @@ class Post implements Entity, SlugEntity, ApiEntity, TimestampableEntity
             'description',
             'tags',
             'category',
+            'filePath',
             'slug',
+            'publishedAt',
         ];
     }
 }

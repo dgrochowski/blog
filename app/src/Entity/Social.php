@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Traits\FileTrait;
 use App\Entity\Traits\SlugTrait;
 use App\Repository\SocialRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Social implements Entity, SlugEntity, ApiEntity, TimestampableEntity
 {
     use SlugTrait;
+    use FileTrait;
     use TimestampableTrait;
 
     #[ORM\Id]
@@ -66,12 +68,10 @@ class Social implements Entity, SlugEntity, ApiEntity, TimestampableEntity
     public function apiFields(): array
     {
         return [
-            'id',
             'name',
             'value',
+            'filePath',
             'slug',
-            'createdAt',
-            'updatedAt',
         ];
     }
 }
