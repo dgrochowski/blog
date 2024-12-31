@@ -9,7 +9,6 @@ use App\Repository\FileRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FileRepository::class)]
 class File implements Entity, SlugEntity, TimestampableEntity
@@ -27,15 +26,12 @@ class File implements Entity, SlugEntity, TimestampableEntity
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isImage;
 
-    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private string $fileName;
 
-    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private string $originalName;
 
-    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private string $directory;
 
@@ -44,6 +40,8 @@ class File implements Entity, SlugEntity, TimestampableEntity
 
     #[ORM\Column(length: 100)]
     private string $mimeType;
+
+    private ?string $uploadImageName = null;
 
     public function getId(): ?int
     {
@@ -131,5 +129,17 @@ class File implements Entity, SlugEntity, TimestampableEntity
             .$this->getDirectory()
             .DIRECTORY_SEPARATOR
             .$this->getFilename();
+    }
+
+    public function getUploadImageName(): ?string
+    {
+        return $this->uploadImageName;
+    }
+
+    public function setUploadImageName(?string $uploadImageName): self
+    {
+        $this->uploadImageName = $uploadImageName;
+
+        return $this;
     }
 }

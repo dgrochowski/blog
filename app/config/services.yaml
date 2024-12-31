@@ -46,6 +46,10 @@ services:
         arguments:
             $tempDirectory: '%temp_directory%'
 
+    App\Bus\Command\CreateFileCommandHandler:
+        arguments:
+            $tempDirectory: '%temp_directory%'
+
     App\Controller\Admin\SettingCrudController:
         arguments:
             $settingsAddable: '%settings_addable%'
