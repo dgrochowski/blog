@@ -8,6 +8,7 @@ use App\Bus\Bus;
 use App\Entity\Category;
 use App\Entity\File;
 use App\Entity\Post;
+use App\Entity\Setting;
 use App\Entity\Tag;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -64,6 +65,8 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::section('Admin')
             ->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class)
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Settings', 'fa fa-gear', Setting::class)
             ->setPermission('ROLE_ADMIN');
     }
 }
