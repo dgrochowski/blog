@@ -10,6 +10,7 @@ final readonly class UpdateSocialCommand implements CommandInterface
         public int $id,
         public string $name,
         public ?string $value,
+        public ?string $uploadImageName,
         public string $slug,
     ) {
     }

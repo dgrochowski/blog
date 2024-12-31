@@ -34,6 +34,7 @@ final class CreateSocialCommandHandlerTest extends TestCase
         $social = new Social();
         $social->setName('Test Social');
         $social->setValue('Test Value');
+        $social->setUploadImageName('test-social.jpg');
         $social->setSlug('test-social');
 
         $this->entityManager->expects(self::once())
@@ -43,6 +44,7 @@ final class CreateSocialCommandHandlerTest extends TestCase
         $command = new CreateSocialCommand(
             name: 'Test Social',
             value: 'Test Value',
+            uploadImageName: 'test-social.jpg',
             slug: 'test-social',
         );
 
@@ -64,6 +66,7 @@ final class CreateSocialCommandHandlerTest extends TestCase
         $social = new Social();
         $social->setName('Test Social');
         $social->setValue('Test Value');
+        $social->setUploadImageName('test-social.jpg');
         $social->setSlug('test-social');
 
         $this->entityManager->expects(self::once())
@@ -73,6 +76,7 @@ final class CreateSocialCommandHandlerTest extends TestCase
         $command = new CreateSocialCommand(
             name: 'Test Social',
             value: 'Test Value',
+            uploadImageName: 'test-social.jpg',
             slug: 'test-social',
         );
 
