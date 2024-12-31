@@ -41,3 +41,7 @@ services:
     App\EventListener\PostPreFlushListener:
         arguments:
             $tempDirectory: '%temp_directory%'
+
+    App\Controller\Admin\SettingCrudController:
+        arguments:
+            $settingsAddable: '%settings_addable%'
