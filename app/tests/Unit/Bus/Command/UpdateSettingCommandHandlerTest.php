@@ -53,7 +53,7 @@ final class UpdateSettingCommandHandlerTest extends TestCase
             ->with(321)
             ->willReturn($setting);
 
-        $setting->setName('New Test Tag');
+        $setting->setName('New Test Social');
         $setting->setValue('Test Value');
         $setting->setSlug('new-slug');
 
