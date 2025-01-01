@@ -38,12 +38,6 @@ class GetPaginateQueryHandler implements QueryHandlerInterface
                         ->andWhere($qb->expr()->in('a.slug', ':authorSlugs'))
                         ->setParameter('authorSlugs', $filterValues);
                     break;
-                    //                case 'tag':
-                    //                    foreach ($filterValues as $key => $filterValue) {
-                    //                        $qb->andWhere($qb->expr()->like('e.cachedTags', ':cachedTags'.$key))
-                    //                            ->setParameter('cachedTags'.$key, '%'.$filterValue.'%');
-                    //                    }
-                    //                    break;
             }
         }
 
