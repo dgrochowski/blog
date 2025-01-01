@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Post;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -37,6 +39,13 @@ class PostCrudController extends AbstractCrudController
             'category',
             'slug',
         ];
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        $crud = parent::configureCrud($crud);
+
+        return $crud->setDefaultSort(['publishedAt' => 'DESC']);
     }
 
     public function configureFields(string $pageName): iterable
@@ -75,11 +84,15 @@ class PostCrudController extends AbstractCrudController
             ])
         ;
         yield AssociationField::new('tags') // Many-to-Many relationship with Tag
+            ->hideOnIndex()
             ->setLabel('Tags')
                 ->setFormTypeOptions([
                     'by_reference' => false, // Helps with ManyToMany relationships
                 ])
                 ->setSortable(true);
+        yield ArrayField::new('cachedTags', 'Tags')
+            ->hideOnForm()
+            ->onlyOnIndex();
         yield TextField::new('author')
             ->setDisabled()
             ->hideOnForm()

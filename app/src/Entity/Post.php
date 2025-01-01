@@ -41,6 +41,13 @@ class Post implements Entity, SlugEntity, TimestampableEntity
     #[ORM\JoinTable(name: 'posts_tags')]
     private Collection $tags;
 
+    /**
+     * @var string[]
+     */
+    #[Groups(['api'])]
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+    private array $cachedTags = [];
+
     #[Groups(['api'])]
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts')]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
@@ -48,7 +55,7 @@ class Post implements Entity, SlugEntity, TimestampableEntity
 
     #[Groups(['api'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    protected $publishedAt;
+    protected \DateTimeInterface $publishedAt;
 
     #[Groups(['api'])]
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -113,6 +120,28 @@ class Post implements Entity, SlugEntity, TimestampableEntity
     {
         $this->tags->removeElement($tag);
         $tag->removePost($this);
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCachedTags(): array
+    {
+        return $this->cachedTags;
+    }
+
+    public function updateCachedTags(): self
+    {
+        $cachedTags = [];
+        /**
+         * @var Tag $tag
+         */
+        foreach ($this->tags as $tag) {
+            $cachedTags[] = $tag->getSlug();
+        }
+        $this->cachedTags = $cachedTags;
 
         return $this;
     }

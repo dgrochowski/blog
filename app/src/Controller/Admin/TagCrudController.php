@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Post;
 use App\Entity\Tag;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -26,6 +28,30 @@ class TagCrudController extends AbstractCrudController
         return ['name', 'slug'];
     }
 
+    /** @phpstan-ignore-next-line */
+    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Tag) {
+            return;
+        }
+
+        $qb = $entityManager->createQueryBuilder();
+        $qb->select('COUNT(p.id)')
+            ->from(Post::class, 'p')
+            ->innerJoin('p.tags', 't')
+            ->where('t.slug = :slug')
+            ->setParameter('slug', $entityInstance->getSlug())
+            ->setMaxResults(1);
+
+        if (0 === $qb->getQuery()->getSingleScalarResult()) {
+            parent::deleteEntity($entityManager, $entityInstance);
+
+            return;
+        }
+
+        $this->addFlash('warning', 'Object is used');
+    }
+
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -33,9 +59,12 @@ class TagCrudController extends AbstractCrudController
             TextField::new('name'),
             TextField::new('slug')
                 ->hideWhenUpdating()
+                ->setHelp('wartość uwzględniana w wyszukiwarce postów')
                 ->setRequired(false),
             TextField::new('slug')
                 ->onlyWhenUpdating()
+                ->setDisabled()
+                ->setHelp('wartość uwzględniana w wyszukiwarce postów')
                 ->setRequired(true),
             DateTimeField::new('createdAt')
                 ->onlyOnIndex(),

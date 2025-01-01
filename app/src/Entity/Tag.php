@@ -59,6 +59,11 @@ class Tag implements Entity, SlugEntity, TimestampableEntity
         return $this;
     }
 
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
     public function addPost(Post $post): void
     {
         $this->posts[] = $post;
