@@ -30,7 +30,8 @@ class PostRepository extends ServiceEntityRepository implements PaginationReposi
     {
         $qb = parent::createQueryBuilder($alias, $indexBy);
         $qb->andWhere($alias.'.publishedAt <= :now')
-            ->setParameter('now', $this->clock->now());
+            ->setParameter('now', $this->clock->now())
+        ;
 
         return $qb;
     }

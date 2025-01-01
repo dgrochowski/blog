@@ -31,6 +31,7 @@ class PostPreFlushListener
     {
         $this->handleFileUpload($post);
         $this->assignAuthor($post);
+        $post->updateCachedTags();
     }
 
     private function handleFileUpload(Post $post): void
