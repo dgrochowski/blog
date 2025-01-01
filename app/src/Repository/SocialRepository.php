@@ -14,14 +14,4 @@ class SocialRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Social::class);
     }
-
-    public function findOneBySlug(string $slug): ?Social
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.slug = :slug')
-            ->setParameter('slug', $slug)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
 }

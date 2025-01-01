@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Bus\Query\GetTagQuery;
-use App\Bus\Query\GetTagsQuery;
-use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Tag;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/tag')]
+#[Route('/tags')]
 class TagController extends ApiController
 {
-    #[Route('/{slug}', methods: ['GET'])]
-    public function one(string $slug): Response
+    protected function getEntityFqcn(): string
     {
-        return $this->jsonResponse(
-            $this->bus->query(new GetTagQuery($slug)),
-        );
+        return Tag::class;
+    }
+
+    #[Route('/{slug}', methods: ['GET'])]
+    public function one(string $slug): JsonResponse
+    {
+        return $this->oneBySlug($slug);
     }
 
     #[Route('/', methods: ['GET'])]
-    public function all(): Response
+    public function all(Request $request): JsonResponse
     {
-        return $this->jsonResponse(
-            $this->bus->query(new GetTagsQuery()),
-        );
+        return $this->paginate($request);
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Bus\Query;
 
-use App\Bus\Query\GetByIdQuery;
-use App\Bus\Query\GetByIdQueryHandler;
+use App\Bus\Query\GetBySlugQuery;
+use App\Bus\Query\GetBySlugQueryHandler;
 use App\Entity\Tag;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +14,7 @@ use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class GetByIdQueryHandlerTest extends TestCase
+final class GetBySlugQueryHandlerTest extends TestCase
 {
     private EntityManagerInterface|MockObject $entityManager;
 
@@ -25,7 +25,7 @@ final class GetByIdQueryHandlerTest extends TestCase
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
     }
 
-    public function testGetByIdQueryHandler(): void
+    public function testGetBySlugQueryHandler(): void
     {
         $tag = new Tag();
         $tag->setName('Test name');
@@ -39,11 +39,11 @@ final class GetByIdQueryHandlerTest extends TestCase
         $qb = $this->createMock(QueryBuilder::class);
         $qb->expects(self::once())
             ->method('andWhere')
-            ->with('e.id = :id')
+            ->with('e.slug = :slug')
             ->willReturn($qb);
         $qb->expects(self::once())
             ->method('setParameter')
-            ->with('id', 1)
+            ->with('slug', 'test-slug')
             ->willReturn($qb);
         $qb->expects(self::once())
             ->method('getQuery')
@@ -59,12 +59,12 @@ final class GetByIdQueryHandlerTest extends TestCase
             ->with(Tag::class)
             ->willReturn($tagRepository);
 
-        $query = new GetByIdQuery(
+        $query = new GetBySlugQuery(
             className: Tag::class,
-            id: 1,
+            slug: 'test-slug',
         );
 
-        $result = new GetByIdQueryHandler($this->entityManager)($query);
+        $result = new GetBySlugQueryHandler($this->entityManager)($query);
         $this->assertEquals($tag, $result);
     }
 }

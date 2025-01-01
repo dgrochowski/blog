@@ -14,14 +14,4 @@ class SettingRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Setting::class);
     }
-
-    public function findOneBySlug(string $slug): ?Setting
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.slug = :slug')
-            ->setParameter('slug', $slug)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
 }

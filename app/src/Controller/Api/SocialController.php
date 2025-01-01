@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Bus\Query\GetSocialQuery;
-use App\Bus\Query\GetSocialsQuery;
-use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Social;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/social')]
+#[Route('/socials')]
 class SocialController extends ApiController
 {
-    #[Route('/{slug}', methods: ['GET'])]
-    public function one(string $slug): Response
+    protected function getEntityFqcn(): string
     {
-        return $this->jsonResponse(
-            $this->bus->query(new GetSocialQuery($slug)),
-        );
+        return Social::class;
+    }
+
+    #[Route('/{slug}', methods: ['GET'])]
+    public function one(string $slug): JsonResponse
+    {
+        return $this->oneBySlug($slug);
     }
 
     #[Route('/', methods: ['GET'])]
-    public function all(): Response
+    public function all(Request $request): JsonResponse
     {
-        return $this->jsonResponse(
-            $this->bus->query(new GetSocialsQuery()),
-        );
+        return $this->paginate($request);
     }
 }

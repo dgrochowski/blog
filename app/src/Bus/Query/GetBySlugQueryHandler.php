@@ -7,21 +7,21 @@ namespace App\Bus\Query;
 use App\Entity\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GetByIdQueryHandler implements QueryHandlerInterface
+class GetBySlugQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function __invoke(GetByIdQuery $query): ?Entity
+    public function __invoke(GetBySlugQuery $query): ?Entity
     {
         /** @phpstan-ignore-next-line */
         $repository = $this->entityManager->getRepository($query->className);
 
         return $repository->createQueryBuilder('e')
-            ->andWhere('e.id = :id')
-            ->setParameter('id', $query->id)
+            ->andWhere('e.slug = :slug')
+            ->setParameter('slug', $query->slug)
             ->getQuery()
             ->getOneOrNullResult();
     }

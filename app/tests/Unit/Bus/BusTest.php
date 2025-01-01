@@ -7,8 +7,8 @@ namespace App\Tests\Unit\Bus;
 use App\Bus\Bus;
 use App\Bus\Command\CreateCategoryCommand;
 use App\Bus\Command\CreateCategoryCommandHandler;
-use App\Bus\Query\GetCategoryQuery;
-use App\Bus\Query\GetCategoryQueryHandler;
+use App\Bus\Query\GetBySlugQuery;
+use App\Bus\Query\GetBySlugQueryHandler;
 use App\Entity\Category;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -44,11 +44,14 @@ final class BusTest extends TestCase
             ->method('error')
             ->with(sprintf(
                 '%s error: %s',
-                GetCategoryQuery::class,
+                GetBySlugQuery::class,
                 'Dispatch error',
             ));
 
-        $query = new GetCategoryQuery('test-slug');
+        $query = new GetBySlugQuery(
+            Category::class,
+            'test-slug',
+        );
 
         $this->queryBus
             ->expects(self::once())
@@ -67,11 +70,14 @@ final class BusTest extends TestCase
             ->method('error')
             ->with(sprintf(
                 'Query not handled correctly. Query: %s, contains: %s',
-                GetCategoryQuery::class,
-                '{"slug":"test-slug"}',
+                GetBySlugQuery::class,
+                '{"className":"App\\\Entity\\\Category","slug":"test-slug"}',
             ));
 
-        $query = new GetCategoryQuery('test-slug');
+        $query = new GetBySlugQuery(
+            Category::class,
+            'test-slug',
+        );
         $envelope = new Envelope($query);
 
         $this->queryBus
@@ -91,8 +97,11 @@ final class BusTest extends TestCase
             ->method('error');
 
         $category = new Category();
-        $query = new GetCategoryQuery('test-slug');
-        $envelope = new Envelope($query, [new HandledStamp($category, GetCategoryQueryHandler::class)]);
+        $query = new GetBySlugQuery(
+            Category::class,
+            'test-slug',
+        );
+        $envelope = new Envelope($query, [new HandledStamp($category, GetBySlugQueryHandler::class)]);
 
         $this->queryBus
             ->expects(self::once())

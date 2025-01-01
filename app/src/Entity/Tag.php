@@ -10,10 +10,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
-class Tag implements Entity, SlugEntity, ApiEntity, TimestampableEntity
+class Tag implements Entity, SlugEntity, TimestampableEntity
 {
     use SlugTrait;
     use TimestampableTrait;
@@ -23,6 +24,7 @@ class Tag implements Entity, SlugEntity, ApiEntity, TimestampableEntity
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['api'])]
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -65,16 +67,5 @@ class Tag implements Entity, SlugEntity, ApiEntity, TimestampableEntity
     public function removePost(Post $post): void
     {
         $this->posts->removeElement($post);
-    }
-
-    public function apiFields(): array
-    {
-        return [
-            'id',
-            'name',
-            'slug',
-            'createdAt',
-            'updatedAt',
-        ];
     }
 }

@@ -9,10 +9,11 @@ use App\Entity\Traits\SlugTrait;
 use App\Repository\SocialRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SocialRepository::class)]
-class Social implements Entity, SlugEntity, ApiEntity, TimestampableEntity
+class Social implements Entity, SlugEntity, TimestampableEntity
 {
     use SlugTrait;
     use FileTrait;
@@ -23,10 +24,12 @@ class Social implements Entity, SlugEntity, ApiEntity, TimestampableEntity
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['api'])]
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(['api'])]
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $value = null;
@@ -63,15 +66,5 @@ class Social implements Entity, SlugEntity, ApiEntity, TimestampableEntity
         $this->value = $value;
 
         return $this;
-    }
-
-    public function apiFields(): array
-    {
-        return [
-            'name',
-            'value',
-            'filePath',
-            'slug',
-        ];
     }
 }

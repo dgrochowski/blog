@@ -12,10 +12,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
-class Post implements Entity, SlugEntity, ApiEntity, TimestampableEntity
+class Post implements Entity, SlugEntity, TimestampableEntity
 {
     use SlugTrait;
     use FileTrait;
@@ -26,24 +27,30 @@ class Post implements Entity, SlugEntity, ApiEntity, TimestampableEntity
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['api'])]
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(['api'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['api'])]
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'posts')]
     #[ORM\JoinTable(name: 'posts_tags')]
     private Collection $tags;
 
+    #[Groups(['api'])]
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts')]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
     private ?Category $category = null;
 
+    #[Groups(['api'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     protected $publishedAt;
 
+    #[Groups(['api'])]
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
     private User $author;
@@ -144,19 +151,5 @@ class Post implements Entity, SlugEntity, ApiEntity, TimestampableEntity
         $this->author = $author;
 
         return $this;
-    }
-
-    public function apiFields(): array
-    {
-        return [
-            'id',
-            'name',
-            'description',
-            'tags',
-            'category',
-            'filePath',
-            'slug',
-            'publishedAt',
-        ];
     }
 }

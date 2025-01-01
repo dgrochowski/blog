@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Bus\Query\GetCategoriesQuery;
-use App\Bus\Query\GetCategoryQuery;
-use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Category;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/category')]
+#[Route('/categories')]
 class CategoryController extends ApiController
 {
-    #[Route('/{slug}', methods: ['GET'])]
-    public function one(string $slug): Response
+    protected function getEntityFqcn(): string
     {
-        return $this->jsonResponse(
-            $this->bus->query(new GetCategoryQuery($slug)),
-        );
+        return Category::class;
+    }
+
+    #[Route('/{slug}', methods: ['GET'])]
+    public function one(string $slug): JsonResponse
+    {
+        return $this->oneBySlug($slug);
     }
 
     #[Route('/', methods: ['GET'])]
-    public function all(): Response
+    public function all(Request $request): JsonResponse
     {
-        return $this->jsonResponse(
-            $this->bus->query(new GetCategoriesQuery()),
-        );
+        return $this->paginate($request);
     }
 }

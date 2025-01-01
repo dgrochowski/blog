@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Bus\Query\GetPostQuery;
-use App\Bus\Query\GetPostsQuery;
-use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Post;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/post')]
+#[Route('/posts')]
 class PostController extends ApiController
 {
-    #[Route('/{slug}', methods: ['GET'])]
-    public function one(string $slug): Response
+    protected function getEntityFqcn(): string
     {
-        return $this->jsonResponse(
-            $this->bus->query(new GetPostQuery($slug)),
-        );
+        return Post::class;
+    }
+
+    #[Route('/{slug}', methods: ['GET'])]
+    public function one(string $slug): JsonResponse
+    {
+        return $this->oneBySlug($slug);
     }
 
     #[Route('/', methods: ['GET'])]
-    public function all(): Response
+    public function all(Request $request): JsonResponse
     {
-        return $this->jsonResponse(
-            $this->bus->query(new GetPostsQuery()),
-        );
+        return $this->paginate($request);
     }
 }
