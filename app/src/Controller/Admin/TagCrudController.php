@@ -59,12 +59,12 @@ class TagCrudController extends AbstractCrudController
             TextField::new('name'),
             TextField::new('slug')
                 ->hideWhenUpdating()
-                ->setHelp('wartość uwzględniana w wyszukiwarce postów')
+                ->setHelp('value included in post search engine')
                 ->setRequired(false),
             TextField::new('slug')
                 ->onlyWhenUpdating()
                 ->setDisabled()
-                ->setHelp('wartość uwzględniana w wyszukiwarce postów')
+                ->setHelp('value included in post search engine')
                 ->setRequired(true),
             DateTimeField::new('createdAt')
                 ->onlyOnIndex(),
