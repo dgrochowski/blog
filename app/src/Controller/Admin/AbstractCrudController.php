@@ -92,7 +92,7 @@ abstract class AbstractCrudController extends EasyCrudController
 
         $id = $entityInstance->getId();
         $this->bus->command(new DeleteCommand($className, $id));
-        if (null === $this->bus->query(new GetByIdQuery($id, $className))) {
+        if (null === $this->bus->query(new GetByIdQuery(className: $className, id: $id))) {
             $this->addFlash('success', 'Removed successfully');
 
             return;

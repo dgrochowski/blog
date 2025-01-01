@@ -14,14 +14,4 @@ class FileRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, File::class);
     }
-
-    public function findOneBySlug(string $slug): ?File
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.slug = :slug')
-            ->setParameter('slug', $slug)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
 }

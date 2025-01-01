@@ -29,7 +29,13 @@ class UserCrudController extends AbstractCrudController
 
     public function getEntityFields(): array
     {
-        return ['name', 'email', 'updatedPassword', 'roles'];
+        return [
+            'name',
+            'email',
+            'updatedPassword',
+            'roles',
+            'slug',
+        ];
     }
 
     /** @phpstan-ignore-next-line  */
@@ -99,6 +105,12 @@ class UserCrudController extends AbstractCrudController
             ->renderExpanded()
             ->autocomplete()
             ->setChoices(['Editor' => 'ROLE_EDITOR', 'Admin' => 'ROLE_ADMIN'])
+            ->setRequired(true);
+        yield TextField::new('slug')
+            ->hideWhenUpdating()
+            ->setRequired(false);
+        yield TextField::new('slug')
+            ->onlyWhenUpdating()
             ->setRequired(true);
         yield BooleanField::new('isAdmin')
             ->setDisabled()

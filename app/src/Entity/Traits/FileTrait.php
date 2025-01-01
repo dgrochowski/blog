@@ -6,6 +6,7 @@ namespace App\Entity\Traits;
 
 use App\Entity\File;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait FileTrait
 {
@@ -27,6 +28,7 @@ trait FileTrait
         return $this;
     }
 
+    #[Groups(['api'])]
     public function getFilePath(): ?string
     {
         if (null === $this->file) {

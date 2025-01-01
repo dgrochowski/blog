@@ -2,18 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\SlugTrait;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity as TimestampableTrait;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\Table(name: '`user`')]
-class User implements Entity, UserInterface, PasswordAuthenticatedUserInterface, TimestampableEntity
+class User implements Entity, SlugEntity, UserInterface, PasswordAuthenticatedUserInterface, TimestampableEntity
 {
+    use SlugTrait;
     use TimestampableTrait;
 
     #[ORM\Id]
@@ -21,6 +24,7 @@ class User implements Entity, UserInterface, PasswordAuthenticatedUserInterface,
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['api'])]
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $name = null;

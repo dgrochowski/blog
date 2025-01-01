@@ -7,22 +7,25 @@ namespace App\Bus\Query;
 use App\Entity\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GetByIdQueryHandler implements QueryHandlerInterface
+class GetPaginateQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function __invoke(GetByIdQuery $query): ?Entity
+    /**
+     * @return Entity[]
+     */
+    public function __invoke(GetPaginateQuery $query): array
     {
         /** @phpstan-ignore-next-line */
         $repository = $this->entityManager->getRepository($query->className);
 
         return $repository->createQueryBuilder('e')
-            ->andWhere('e.id = :id')
-            ->setParameter('id', $query->id)
+            ->setFirstResult(($query->page - 1) * $query->limit)
+            ->setMaxResults($query->limit)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 }

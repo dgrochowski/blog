@@ -24,5 +24,6 @@ class UpdateUserCommandHandler implements CommandHandlerInterface
         $user->setEmail($command->email);
         $user->setUpdatedPassword($command->updatedPassword);
         $user->setRoles($command->roles);
+        $user->setSlug($command->slug);
     }
 }

@@ -35,6 +35,7 @@ final class UpdateUserCommandHandlerTest extends TestCase
             email: 'test@test.test',
             updatedPassword: 'password',
             roles: ['ROLE_ADMIN'],
+            slug: 'test-slug',
         );
 
         new UpdateUserCommandHandler(
@@ -47,6 +48,7 @@ final class UpdateUserCommandHandlerTest extends TestCase
         $user = new User();
         $user->setName('User');
         $user->setEmail('test@test.test');
+        $user->setSlug('some-slug');
 
         $this->userRepository->expects(self::once())
             ->method('find')
@@ -55,6 +57,7 @@ final class UpdateUserCommandHandlerTest extends TestCase
 
         $user->setName('New User');
         $user->setEmail('admin@admin.admin');
+        $user->setSlug('test-slug');
 
         $command = new UpdateUserCommand(
             id: 123,
@@ -62,6 +65,7 @@ final class UpdateUserCommandHandlerTest extends TestCase
             email: 'admin@admin.admin',
             updatedPassword: null,
             roles: ['ROLE_ADMIN'],
+            slug: 'test-slug',
         );
 
         new UpdateUserCommandHandler(
@@ -75,6 +79,7 @@ final class UpdateUserCommandHandlerTest extends TestCase
         $user->setName('User');
         $user->setEmail('test@test.test');
         $user->setPassword('password');
+        $user->setSlug('some-slug');
 
         $this->userRepository->expects(self::once())
             ->method('find')
@@ -84,6 +89,7 @@ final class UpdateUserCommandHandlerTest extends TestCase
         $user->setName('New User');
         $user->setEmail('admin@admin.admin');
         $user->setUpdatedPassword('plain-password');
+        $user->setSlug('test-slug');
 
         $command = new UpdateUserCommand(
             id: 123,
@@ -91,6 +97,7 @@ final class UpdateUserCommandHandlerTest extends TestCase
             email: 'admin@admin.admin',
             updatedPassword: 'plain-password',
             roles: ['ROLE_ADMIN'],
+            slug: 'test-slug',
         );
 
         new UpdateUserCommandHandler(

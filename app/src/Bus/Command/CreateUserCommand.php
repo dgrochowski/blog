@@ -14,6 +14,7 @@ final readonly class CreateUserCommand implements CommandInterface
         public string $email,
         public string $updatedPassword,
         public array $roles = ['ROLE_USER'],
+        public ?string $slug = null,
     ) {
     }
 }

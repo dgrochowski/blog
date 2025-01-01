@@ -50,7 +50,7 @@ class DeleteSettingCommand extends Command
         ]);
 
         $slug = $input->getArgument('slug');
-        $setting = $this->settingRepository->findOneBySlug($slug);
+        $setting = $this->settingRepository->findOneBy(['slug' => $slug]);
         if (null !== $setting) {
             $this->bus->command(new DeleteCommand(
                 className: Setting::class,

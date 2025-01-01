@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace App\Bus\Query;
 
-use App\Entity\Entity;
 use Doctrine\ORM\EntityManagerInterface;
 
-class GetByIdQueryHandler implements QueryHandlerInterface
+class GetCountQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function __invoke(GetByIdQuery $query): ?Entity
+    public function __invoke(GetCountQuery $query): int
     {
         /** @phpstan-ignore-next-line */
         $repository = $this->entityManager->getRepository($query->className);
 
-        return $repository->createQueryBuilder('e')
-            ->andWhere('e.id = :id')
-            ->setParameter('id', $query->id)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $result = $repository->createQueryBuilder('e')
+            ->select('COUNT(e.id)')
+            ->getQuery();
+
+        return (int) $result->getSingleScalarResult();
     }
 }
