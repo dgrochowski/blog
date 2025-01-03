@@ -1,0 +1,12 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block page_title %}Info{% endblock %}
+
+{% block main %}
+    <h2>{% trans from 'admin' %}Info{% endtrans %}</h2>
+    <p>OS {{ os }}</p>
+    <p>PHP {{ php_version }}</p>
+    <p>Postgres {{ postgres_version }}</p>
+    <p>Free disk space: {{ free_disk_space }}</p>
+    <p>RAM usage: {{ memory_usage }}</p>
+{% endblock main %}

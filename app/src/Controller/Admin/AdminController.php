@@ -12,12 +12,15 @@ use App\Entity\Setting;
 use App\Entity\Social;
 use App\Entity\Tag;
 use App\Entity\User;
+use App\Service\LogReader;
+use App\Service\SystemInfoService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminController extends AbstractDashboardController
@@ -26,6 +29,8 @@ class AdminController extends AbstractDashboardController
         protected Bus $bus,
         protected AuthenticationUtils $authenticationUtils,
         protected Security $security,
+        protected SystemInfoService $systemInfoService,
+        protected LogReader $logReader,
     ) {
     }
 
@@ -41,6 +46,28 @@ class AdminController extends AbstractDashboardController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN', statusCode: 423)]
+    #[Route('/info', name: 'info')]
+    public function info(): Response
+    {
+        return $this->render('admin/info.html.twig', $this->systemInfoService->getSystemInfo());
+    }
+
+    #[IsGranted('ROLE_ADMIN', statusCode: 423)]
+    #[Route('/debug', name: 'debug')]
+    public function debug(): Response
+    {
+        try {
+            $logs = $this->logReader->getLogs(1, 200);
+        } catch (\Throwable $e) {
+            $logs = [];
+        }
+
+        return $this->render('admin/debug.html.twig', [
+            'logs' => $logs,
+        ]);
+    }
+
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
@@ -51,8 +78,6 @@ class AdminController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        //        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-
         yield MenuItem::section('Blog');
         yield MenuItem::linkToCrud('Posts', 'fa fa-newspaper', Post::class)
             ->setPermission('ROLE_EDITOR');
@@ -71,5 +96,15 @@ class AdminController extends AbstractDashboardController
             ->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Settings', 'fa fa-gear', Setting::class)
             ->setPermission('ROLE_ADMIN');
+
+        yield MenuItem::section('System')
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToRoute('Info', 'fa fa-info', 'info')
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToRoute('Debug log', 'fa fa-book', 'debug')
+            ->setPermission('ROLE_ADMIN');
+
+        yield MenuItem::section();
+        yield MenuItem::linkToUrl('Github', 'fa-brands fa-github', 'https://github.com/dgrochowski/blog');
     }
 }

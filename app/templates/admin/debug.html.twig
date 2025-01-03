@@ -1,0 +1,59 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block page_title %}Debug log{% endblock %}
+
+{% block main %}
+    <h2>{% trans from 'admin' %}Debug log{% endtrans %}</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Channel</th>
+            <th>Level</th>
+            <th>Message</th>
+            <th>Context</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            {% set logParts = log|split(' ', 5) %}
+            <tr>
+                <td>{{ (logParts[0]|replace({'[': '', ']': ''}))|date('Y-m-d H:i:s') }}</td>
+                <td>{{ logParts[1]|split('.')[0] }}</td>
+                <td>{{ logParts[1]|split('.')[1] }}</td>
+                <td>{{ logParts[3] }}</td>
+                <td>
+                    {% if logParts[4] is not empty %}
+                        <pre>{{ logParts[4] }}</pre>
+                    {% else %}
+                        <em>No context</em>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No logs available</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            color: #000;
+            background-color: #858585;
+        }
+    </style>
+{% endblock main %}

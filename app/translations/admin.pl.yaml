@@ -15,6 +15,9 @@ Categories: Kategorie
 Category: Kategoria
 Settings: Ustawienia
 Setting: Ustawienie
+System: System
+Info: Info
+Debug log: Debug log
 Socials: Sociale
 Social: Social link
 Value: Wartość
@@ -48,3 +51,4 @@ Published At: Data publikacji
 Author: Autor
 "Allowed file types: jpg, png, etc.": "Dozwolone typy plików: jpg, png, itd."
 An error occurred while uploading the file: Wystąpił błąd podczas dodawania pliku
+Github: Github
