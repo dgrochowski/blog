@@ -15,6 +15,9 @@ Categories: Categories
 Category: Category
 Settings: Settings
 Setting: Setting
+System: System
+Info: Info
+Debug log: Debug log
 Socials: Socials
 Social: Social
 Value: Value
@@ -48,3 +51,4 @@ Published At: Published At
 Author: Author
 "Allowed file types: jpg, png, etc.": "Allowed file types: jpg, png, etc."
 An error occurred while uploading the file: An error occurred while uploading the file
+Github: Github

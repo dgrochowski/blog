@@ -53,3 +53,7 @@ services:
     App\Controller\Admin\SettingCrudController:
         arguments:
             $settingsAddable: '%settings_addable%'
+
+    App\Service\LogReader:
+        arguments:
+            $logFilePath: '%kernel.logs_dir%/%kernel.environment%.log'
