@@ -11,7 +11,7 @@ The Blog Application offers a simple, user-friendly admin panel and API for mana
 
 ## Key Features
 
-![Creating a Post](docs/assets/resources.png)
+<img src="docs/assets/resources.png" alt="Key features" width="600px" />
 
 - **Technologies**: Built with PHP and the [Symfony Framework](https://symfony.com), backed by a PostgreSQL database with Doctrine ORM.
 - **Documentation**: API documentation available via [Swagger](https://swagger.io).
@@ -28,7 +28,7 @@ The Blog Application offers a simple, user-friendly admin panel and API for mana
 
 ## Resources in the System
 
-<img src="docs/assets/blog-menu.png" alt="Creating a Post" width="200px" />
+<img src="docs/assets/blog-menu.png" alt="Blog menu" width="200px" />
 
 ### 1. **Posts**
 Manage individual blog posts with titles, content, and associated categories, tags, and images.
@@ -53,7 +53,7 @@ Define and manage custom system settings to tailor the application to your needs
 
 ## User Roles
 
-![Creating a Post](docs/assets/role-editor.gif)
+![Role editor](docs/assets/role-editor.gif)
 
 ### 1. **Admin**
 Admins have full access to the system:

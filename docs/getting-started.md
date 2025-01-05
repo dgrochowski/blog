@@ -15,7 +15,7 @@ This will set up the application and its dependencies for local development.
 
 ### 2. **Access the Admin Panel**
 
-![Creating a Post](assets/create-admin.gif)
+![Creating Admin user](assets/create-admin.gif)
 
 Open console in docker container:
 ```bash
@@ -32,7 +32,7 @@ Navigate to https://localhost/admin in your browser. Use Admin e-mail and passwo
 
 ### 3. **Swagger API Docs**
 
-![Creating a Post](assets/working-with-api.gif)
+![Working with api](assets/working-with-api.gif)
 
 Visit https://localhost/api/doc to explore the available API endpoints.
 
