@@ -9,6 +9,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @extends AbstractCrudController<Social>
+ */
 #[IsGranted('ROLE_ADMIN', statusCode: 423)]
 class SocialCrudController extends AbstractCrudController
 {

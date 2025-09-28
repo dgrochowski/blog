@@ -14,6 +14,7 @@ use App\Entity\Tag;
 use App\Entity\User;
 use App\Service\LogReader;
 use App\Service\SystemInfoService;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -23,6 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class AdminController extends AbstractDashboardController
 {
     public function __construct(

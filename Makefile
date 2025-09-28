@@ -23,9 +23,11 @@ start: check-tools
 	docker compose up -d
 
 migrate: check-tools
+	docker compose exec -T php sh -c 'XDEBUG_MODE=off composer install'
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off bin/console doctrine:migration:migrate -n'
 
 check: check-tools start
+	docker compose exec -T php sh -c 'XDEBUG_MODE=off vendor/bin/rector'
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off vendor/bin/php-cs-fixer fix --diff'
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off symfony check:security'
 	docker compose exec -T php sh -c 'XDEBUG_MODE=off vendor/bin/phpstan --no-interaction'

@@ -15,7 +15,7 @@ class LoginController extends AbstractController
         AuthenticationUtils $authenticationUtils,
         Security $security,
     ): Response {
-        if (null !== $security->getUser()) {
+        if ($security->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
             if ($security->isGranted('ROLE_ADMIN')) {
                 return $this->redirect('/post');
             }

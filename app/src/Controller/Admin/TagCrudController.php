@@ -10,6 +10,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @extends AbstractCrudController<Tag>
+ */
 #[IsGranted('ROLE_EDITOR', statusCode: 423)]
 class TagCrudController extends AbstractCrudController
 {
@@ -28,13 +31,8 @@ class TagCrudController extends AbstractCrudController
         return ['name', 'slug'];
     }
 
-    /** @phpstan-ignore-next-line */
     public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if (!$entityInstance instanceof Tag) {
-            return;
-        }
-
         $qb = $entityManager->createQueryBuilder();
         $qb->select('COUNT(p.id)')
             ->from(Post::class, 'p')

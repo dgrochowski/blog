@@ -99,7 +99,7 @@ class User implements Entity, SlugEntity, UserInterface, PasswordAuthenticatedUs
     {
         $roles = $this->roles;
 
-        if (empty($roles)) {
+        if ([] === $roles) {
             $roles[] = 'ROLE_USER';
         }
 

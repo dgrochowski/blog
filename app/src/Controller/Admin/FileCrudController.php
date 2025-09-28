@@ -13,6 +13,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @extends AbstractCrudController<File>
+ */
 #[IsGranted('ROLE_ADMIN', statusCode: 423)]
 class FileCrudController extends AbstractCrudController
 {

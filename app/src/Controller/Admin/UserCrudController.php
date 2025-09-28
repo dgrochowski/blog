@@ -14,6 +14,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @extends AbstractCrudController<User>
+ */
 #[IsGranted('ROLE_ADMIN', statusCode: 423)]
 class UserCrudController extends AbstractCrudController
 {
@@ -38,7 +41,6 @@ class UserCrudController extends AbstractCrudController
         ];
     }
 
-    /** @phpstan-ignore-next-line  */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         /** @var UserRepository $userRepository */
@@ -53,7 +55,6 @@ class UserCrudController extends AbstractCrudController
         parent::persistEntity($entityManager, $entityInstance);
     }
 
-    /** @phpstan-ignore-next-line  */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         /** @var UserRepository $userRepository */
@@ -68,13 +69,8 @@ class UserCrudController extends AbstractCrudController
         parent::updateEntity($entityManager, $entityInstance);
     }
 
-    /** @phpstan-ignore-next-line  */
     public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if (!$entityInstance instanceof User) {
-            return;
-        }
-
         /** @var User|null $admin */
         $admin = $this->getUser();
         if ($admin?->getId() === $entityInstance->getId()) {
