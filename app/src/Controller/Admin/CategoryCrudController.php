@@ -8,6 +8,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @extends AbstractCrudController<Category>
+ */
 #[IsGranted('ROLE_EDITOR', statusCode: 423)]
 class CategoryCrudController extends AbstractCrudController
 {

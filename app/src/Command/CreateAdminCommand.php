@@ -64,7 +64,7 @@ class CreateAdminCommand extends Command
         ]);
         $violations = $this->validator->validate($email, $emailConstraint);
 
-        if (null !== $this->userRepository->findOneByEmail($email)) {
+        if ($this->userRepository->findOneByEmail($email) instanceof \App\Entity\User) {
             $output->writeln("<error>Admin with email \"$email\" already exists.</error>");
 
             return Command::FAILURE;

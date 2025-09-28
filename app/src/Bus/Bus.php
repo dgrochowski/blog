@@ -34,7 +34,7 @@ class Bus
         }
         $handledStamp = $envelope->last(HandledStamp::class);
 
-        if (null === $handledStamp) {
+        if (!$handledStamp instanceof \Symfony\Component\Messenger\Stamp\StampInterface) {
             $this->logger->error(sprintf(
                 'Query not handled correctly. Query: %s, contains: %s',
                 $query::class,
@@ -62,7 +62,7 @@ class Bus
         }
         $handledStamp = $envelope->last(HandledStamp::class);
 
-        if (null === $handledStamp) {
+        if (!$handledStamp instanceof \Symfony\Component\Messenger\Stamp\StampInterface) {
             $this->logger->error(sprintf(
                 'Command not handled correctly. Command: %s, contains: %s',
                 $command::class,

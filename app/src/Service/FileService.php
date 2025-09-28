@@ -39,10 +39,8 @@ class FileService
 
         try {
             $directory = $this->fullDirectory($file);
-            if (!is_dir($directory)) {
-                if (!mkdir($directory, 0755, true) && !is_dir($directory)) {
-                    throw new FileServiceException('Failed to create directory: '.$directory);
-                }
+            if (!is_dir($directory) && (!mkdir($directory, 0755, true) && !is_dir($directory))) {
+                throw new FileServiceException('Failed to create directory: '.$directory);
             }
             $uploadedFile->move($directory, $fileName);
         } catch (\Throwable $e) {
@@ -65,10 +63,8 @@ class FileService
             if (false === unlink($filePath)) {
                 throw new FileServiceException('Failed to delete file: '.$filePath);
             }
-            if (is_dir($directoryPath) && $this->isDirectoryEmpty($directoryPath)) {
-                if (false === rmdir($directoryPath)) {
-                    throw new FileServiceException('Failed to delete directory: '.$directoryPath);
-                }
+            if (is_dir($directoryPath) && $this->isDirectoryEmpty($directoryPath) && false === rmdir($directoryPath)) {
+                throw new FileServiceException('Failed to delete directory: '.$directoryPath);
             }
         } catch (\Throwable $e) {
             throw new FileServiceException('An error occurred while deleting the file: '.$e->getMessage());
@@ -101,6 +97,6 @@ class FileService
         // Remove "." and ".." from the contents
         $contents = array_diff($contents, ['.', '..']);
 
-        return empty($contents);
+        return [] === $contents;
     }
 }

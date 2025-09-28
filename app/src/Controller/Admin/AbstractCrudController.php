@@ -10,6 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController as EasyCrudController;
 
+/**
+ * @template TEntity of object
+ *
+ * @extends EasyCrudController<TEntity>
+ */
 abstract class AbstractCrudController extends EasyCrudController
 {
     public function __construct(
@@ -43,7 +48,6 @@ abstract class AbstractCrudController extends EasyCrudController
         ;
     }
 
-    /** @phpstan-ignore-next-line */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $className = $this->getEntityClass();
@@ -57,7 +61,6 @@ abstract class AbstractCrudController extends EasyCrudController
         $this->addFlash('success', 'Added successfully');
     }
 
-    /** @phpstan-ignore-next-line */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $className = $this->getEntityClass();
@@ -82,7 +85,6 @@ abstract class AbstractCrudController extends EasyCrudController
         $this->addFlash('success', 'Updated successfully');
     }
 
-    /** @phpstan-ignore-next-line */
     public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         $className = $this->getEntityClass();
