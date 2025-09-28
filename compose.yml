@@ -14,6 +14,8 @@ services:
             - "80:80" # HTTP
             - "443:443" # HTTPS
             - "443:443/udp" # HTTP/3
+            - "9000" # xdebug
+            - "9003" # xdebug
         working_dir: /app
         restart: ${RESTART_PHP:-no}
         # comment the following line in production, it allows to have nice human-readable logs in dev

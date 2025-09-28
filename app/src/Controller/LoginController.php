@@ -55,7 +55,7 @@ class LoginController extends AbstractController
             'csrf_token_intention' => 'authenticate',
 
             // the URL users are redirected to after the login (default: '/admin')
-            'target_path' => $this->generateUrl('_post_index'),
+            'target_path' => $this->generateUrl('admin_post_index'),
 
             'username_label' => 'E-mail',
         ]);
